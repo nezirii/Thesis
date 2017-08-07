@@ -1,0 +1,49 @@
+location,plot,rate.of.decomposition,leaf.type,impact
+Blue,1,-0.001038272,Conifer,High
+Blue,2,-0.001110439,Conifer,High
+Blue,3,-0.001316655,Conifer,High
+Cougar,1,-0.00129499,Conifer,High
+Cougar,2,-0.000902786,Conifer,High
+Cougar,3,-0.0010298,Conifer,High
+Hovey,1,-0.00102053,Conifer,High
+Hovey,2,-0.00106873,Conifer,High
+Hovey,3,-0.001143025,Conifer,High
+Hurley,1,-0.000823431,Conifer,High
+Hurley,2,-0.001172359,Conifer,High
+Hurley,3,-0.000805788,Conifer,High
+Jack,1,-0.001134208,Conifer,Low
+Jack,2,-0.00115859,Conifer,Low
+Jack,3,-0.00120066,Conifer,Low
+Jungle,1,-0.001264932,Conifer,Low
+Jungle,2,-0.001240667,Conifer,Low
+Jungle,3,-0.001078815,Conifer,Low
+Moonbeam,1,-0.001231331,Conifer,Low
+Moonbeam,2,-0.00116934,Conifer,Low
+Moonbeam,3,-0.001203337,Conifer,Low
+Stand Up,1,-0.001122079,Conifer,Low
+Stand Up,2,-0.001290648,Conifer,Low
+Stand Up,3,-0.00134417,Conifer,Low
+Blue,1,-0.000991758,Deciduous,High
+Blue,2,-0.000950977,Deciduous,High
+Blue,3,-0.001037466,Deciduous,High
+Cougar,1,-0.001323536,Deciduous,High
+Cougar,2,-0.001265005,Deciduous,High
+Cougar,3,-0.000945097,Deciduous,High
+Hovey,1,-0.000978366,Deciduous,High
+Hovey,2,-0.001016147,Deciduous,High
+Hovey,3,-0.001056852,Deciduous,High
+Hurley,1,-0.000953307,Deciduous,High
+Hurley,2,-0.001168103,Deciduous,High
+Hurley,3,-0.000970032,Deciduous,High
+Jack,1,-0.001300843,Deciduous,Low
+Jack,2,-0.001139623,Deciduous,Low
+Jack,3,-0.000870073,Deciduous,Low
+Jungle,1,-0.001232273,Deciduous,Low
+Jungle,2,-0.001074169,Deciduous,Low
+Jungle,3,-0.001309836,Deciduous,Low
+Moonbeam,1,-0.001269882,Deciduous,Low
+Moonbeam,2,-0.000929836,Deciduous,Low
+Moonbeam,3,-0.001251139,Deciduous,Low
+Stand Up,1,-0.001178124,Deciduous,Low
+Stand Up,2,-0.001514458,Deciduous,Low
+Stand Up,3,-0.001036712,Deciduous,Low
