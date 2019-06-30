@@ -54,6 +54,9 @@ ggplot(x, aes(x=cat.time, y=pct.moisture.mean)) +
   ylab("Moisture (%)") +
   scale_fill_manual(name="Budworm Activity", values=c("white", "black")) +
   expand_limits(y=.25) +
+  annotate("Text", x=1.5, y=37, label="Interaction: P<0.0001", size=4) +
+  annotate("Text", x=1.5, y=35.8, label="Budworm Impact: P=0.8606", size=4) +
+  annotate("Text", x=1.5, y=34.6, label="Sampling Event: P<0.0001", size=4) +
   theme_bw() +
   theme(legend.justification=c(0.03,0.6),
         legend.position=c(0.03,0.15),

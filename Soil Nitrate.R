@@ -170,6 +170,9 @@ ggplot(x, aes(x=cat.time, y=NO3.mean)) +
   ylab(expression(Soil~Nitrate~(mg~NO[3]~g^{-1}~soil))) +
   scale_fill_manual(name="Budworm Activity", values=c("white", "black")) +
   expand_limits(y=.03) +
+  annotate("Text", x=6.5, y=.03, label="Interaction: P<0.0001", size=4) +
+  annotate("Text", x=6.5, y=.029, label="Budworm Impact: P=0.9822", size=4) +
+  annotate("Text", x=6.5, y=.028, label="Sampling Event: P<0.0001", size=4) +
   theme_bw() +
   theme(legend.justification=c(0.03,0.6),
         legend.position=c(0.03,0.88),
@@ -189,5 +192,7 @@ ggsave('no3.tiff',
        height=4.5,
        dpi=1200,
        compression="lzw")
+
+anova(M0.2)
 
 #### Go to Chapter 6 for Violation of Indpendence

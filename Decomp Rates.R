@@ -1,5 +1,5 @@
 #this is clay
-#I havent had my coffee
+#I havent had my coffee...
 #load data
 
 decomp=read.table(file="decomp.rates.2.5.csv", header=T, sep=",")
@@ -117,6 +117,10 @@ ggplot(data=x,
   ylab("Decomposition Rate (-k)")  + #I changed your y axis label
   ylim(0,.0015) +
   labs(fill="Budworm Activity") +
+  annotate("Text", x=1, y=.0015, label="Interaction: P<0.0001", size=4) +
+  annotate("Text", x=1, y=.00145, label="Budworm Impact: P=0.0024", size=4) +
+  annotate("Text", x=1, y=.0014, label="Leaf Type: P<0.6848", size=4) +
+  annotate("Text", x=1, y=.00135, label="Budworm Impact:Leaf Type Interaction: P<0.7915", size=4) +
   theme_bw() +
   theme(panel.grid.major=element_blank(),
         panel.grid.minor=element_blank(),
@@ -139,3 +143,5 @@ ggsave('decomp by leaf.tiff',
        height=3.25,
        dpi=1200,
        compression="lzw")
+
+anova(M1)

@@ -1,6 +1,6 @@
 #load data
 
-sm<-read.table(file="soil.data.3.csv", header=T, sep=",")
+sm<-read.table(file="nt.summary.csv", header=T, sep=",")
 
 #set factors
 str(sm)
@@ -152,6 +152,9 @@ ggplot(data=x,
   ylab("Net Nitrification")  + 
   ylim(0,.0005) +
   labs(fill="Budworm Activity") +
+  annotate("Text", x=1.5, y=.0005, label="Interaction: P=0.6938", size=4) +
+  annotate("Text", x=1.5, y=.00048, label="Budworm Impact: P=0.0982", size=4) +
+  annotate("Text", x=1.5, y=.00046, label="Sampling Event: P<0.0001", size=4) +
   theme_bw() +
   theme(panel.grid.major=element_blank(),
         panel.grid.minor=element_blank(),

@@ -169,6 +169,9 @@ ggplot(x, aes(x=cat.time, y=TN.inorg.mean)) +
   ylab(expression(Total~Soil~Inorganic~N~(mg~N~g^{-1}~soil))) +
   scale_fill_manual(name="Budworm Activity", values=c("white", "black")) +
   expand_limits(y=.03) +
+  annotate("Text", x=6, y=.05, label="Interaction: P<0.0001", size=4) +
+  annotate("Text", x=6, y=.048, label="Budworm Impact: P=0.4361", size=4) +
+  annotate("Text", x=6, y=.046, label="Sampling Event: P<0.0001", size=4) +
   theme_bw() +
   theme(legend.justification=c(0.03,0.6),
         legend.position=c(0.03,0.88),

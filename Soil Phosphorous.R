@@ -112,7 +112,7 @@ M2.11<-lme(P ~ impact+f.time, random=~1|nest,
 anova(M2,M2.1,M2.2,M2.3,M2.4,M2.5,M2.6,M2.7,M2.8,M2.9,M2.10,M2.11)
 #M1.10 is best with varIdent as a function of time
 
-E2.10<-residuals(M1.10)
+E2.10<-residuals(M2.10)
 
 plot(filter(sm, !is.na(P)) %>%dplyr::select(location),
      E2.10, xlab="Location", ylab="Residuals")
@@ -165,6 +165,9 @@ ggplot(x, aes(x=cat.time, y=P.mean)) +
   ylab(expression(Soil~Phosphate~(mg~PO[4]~g^{-1}~soil))) +
   scale_fill_manual(name="Budworm Activity", values=c("white", "black")) +
   expand_limits(y=.25) +
+  annotate("Text", x=1.505, y=.25, label="Interaction: P<0.0001", size=4) +
+  annotate("Text", x=1.505, y=.23, label="Budworm Impact: P=0.0437", size=4) +
+  annotate("Text", x=1.505, y=.21, label="Sampling Event: P=0.6005", size=4) +
   theme_bw() +
   theme(legend.justification=c(0.03,0.6),
         legend.position=c(0.68,0.88),
@@ -211,16 +214,16 @@ cs2<-corARMA(c(0.3, -0.3), p=2, q=0)
 M2.14<-lme(P ~ impact+f.time, random=~1|nest, 
            na.action=na.omit, data=sm, weights=vf10, correlation=cs1)
 
-E1.14<-residuals(M1.14)
+E2.14<-residuals(M2.14)
 
 plot(filter(sm, !is.na(P)) %>%dplyr::select(location),
-     E1.14, xlab="Location", ylab="Residuals")
+     E2.14, xlab="Location", ylab="Residuals")
 plot(filter(sm, !is.na(P)) %>%dplyr::select(impact),
-     E1.14, xlab="Location", ylab="Residuals")
+     E2.14, xlab="Location", ylab="Residuals")
 
-qqnorm(residuals(M1.14))
-qqline(residuals(M1.14))
-ad.test(residuals(M1.14))
+qqnorm(residuals(M2.14))
+qqline(residuals(M2.14))
+ad.test(residuals(M2.14))
 
 M2.15<-lme(P ~ impact+f.time, random=~1|nest, 
            na.action=na.omit, data=sm, weights=vf10, correlation=cs2)
@@ -301,7 +304,7 @@ M2.10<-lme(log.P ~ impact+f.time, random=~1|nest,
 M2.11<-lme(log.P ~ impact+f.time, random=~1|nest, 
            na.action=na.omit, data=sm, weights=vf11)
 
-anova(M1.1,M1.2,M1.3,M1.4,M1.5,M1.6,M1.7,M1.8,M1.9,M1.10,M1.11)
+anova(M2.1,M2.2,M2.3,M2.4,M2.5,M2.6,M2.7,M2.8,M2.9,M2.10,M2.11)
 #Look at 1, 4, 5, 6, 10, 11
 
 
@@ -429,3 +432,4 @@ ad.test(residuals(M1.11))
 
 #Log does not work for M1 or M2
 #Log of the 5th root does not work for M1 or M2
+
