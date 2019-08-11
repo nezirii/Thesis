@@ -464,8 +464,8 @@ impact<-recode(impact, "b" ="Low")
 event = c(1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10)
 
 log.P.5th.emm = data.frame(cbind(xx,impact,event))
-log.P.5th.emm$emmean.raw = 10^(NTF.DIN.flux.emm$emmean)-1
-log.P.5th.emm$SE.raw = 10^(NTF.DIN.flux.emm$SE)-1
+log.P.5th.emm$emmean.raw = 10^(log.P.5th.emm$emmean)-1
+log.P.5th.emm$SE.raw = 10^(log.P.5th.emm$SE)-1
 
 #this is the final table you can use for plotting
 log.P.5th.emm
