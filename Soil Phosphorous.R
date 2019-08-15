@@ -42,30 +42,39 @@ M1<-lme(P ~ impact+f.time,
         random=~ 1 | location, na.action=na.omit, data=sm, method="ML")
 
 #try nesting
+
 M2<-lme(P ~ impact+f.time, random=~1|nest, 
         na.action=na.omit, data=sm, method="ML")
 
-anova(M0,M2)
+#try interaction with random factor
 
-#M2 looks the best 
+M3<-lme(P ~ impact*f.time, 
+        random=~ 1 | location, na.action=na.omit, data=sm, method="ML")
+
+M4<-lme(P ~ impact*f.time, random=~1|nest, 
+        na.action=na.omit, data=sm, method="ML")
+
+anova(M0,M1,M2,M3,M4)
+
+#M4 has Lower AIC than M2 which was my original choice. M4 is also significantly different with p=0.0427
 
 #Look at residuals
 
-E2<-residuals(M2)
+E4<-residuals(M4)
 
 plot(filter(sm, !is.na(P)) %>%dplyr::select(location),
-     E1, xlab="Location", ylab="Residuals")
+     E4, xlab="Location", ylab="Residuals")
 plot(filter(sm, !is.na(P)) %>%dplyr::select(impact),
-     E1, xlab="Location", ylab="Residuals")
+     E4, xlab="Location", ylab="Residuals")
 
-qqnorm(residuals(M2))
-qqline(residuals(M2))
-ad.test(residuals(M2))
+qqnorm(residuals(M4))
+qqline(residuals(M4))
+ad.test(residuals(M4))
 
 x<-sm$P[!is.na(sm$P)]#removes na values from column
-E1<-residuals(M1,type="normalized")
-plot(M2) #residuals vs fitted values
-plot(x, E2)
+E4<-residuals(M4,type="normalized")
+plot(M4) #residuals vs fitted values
+plot(x, E4)
 
 #try alternate variance structures
 vf1=varIdent(form=~1|impact)
@@ -80,73 +89,72 @@ vf9=varExp(form=~fitted(.)|f.time)
 vf10=varConstPower(form=~ fitted(.)|impact)
 vf11=varConstPower(form=~ fitted(.)|f.time)
 
-M2<-lme(P ~ impact+f.time, random=~1|nest, 
+#Use Model 4
+
+M4<-lme(P ~ impact*f.time, random=~1|nest, 
         na.action=na.omit, data=sm)
 
-M2.1<-lme(P ~ impact+f.time, random=~1|nest, 
-        na.action=na.omit, data=sm, weights=vf1)
+M4.1<-lme(P ~ impact*f.time, random=~1|nest, 
+          na.action=na.omit, data=sm, weights=vf1)
 
-M2.2<-lme(P ~ impact+f.time, random=~1|nest, 
+M4.2<-lme(P ~ impact*f.time, random=~1|nest, 
           na.action=na.omit, data=sm, weights=vf2)
 
-M2.3<-lme(P ~ impact+f.time, random=~1|nest, 
-          na.action=na.omit, data=sm, weights=vf3)
-
-M2.4<-lme(P ~ impact+f.time, random=~1|nest, 
+M4.4<-lme(P ~ impact*f.time, random=~1|nest, 
           na.action=na.omit, data=sm, weights=vf4)
 
-M2.5<-lme(P ~ impact+f.time, random=~1|nest, 
-          na.action=na.omit, data=sm, weights=vf5)
-
-M2.6<-lme(P ~ impact+f.time, random=~1|nest, 
+M4.6<-lme(P ~ impact*f.time, random=~1|nest, 
           na.action=na.omit, data=sm, weights=vf6)
 
-M2.7<-lme(P ~ impact+f.time, random=~1|nest, 
+M4.7<-lme(P ~ impact*f.time, random=~1|nest, 
           na.action=na.omit, data=sm, weights=vf7)
 
-M2.8<-lme(P ~ impact+f.time, random=~1|nest, 
+M4.8<-lme(P ~ impact*f.time, random=~1|nest, 
           na.action=na.omit, data=sm, weights=vf8)
 
-M2.9<-lme(P ~ impact+f.time, random=~1|nest, 
+M4.9<-lme(P ~ impact*f.time, random=~1|nest, 
           na.action=na.omit, data=sm, weights=vf9)
 
-M2.10<-lme(P ~ impact+f.time, random=~1|nest, 
-          na.action=na.omit, data=sm, weights=vf10)
+M4.10<-lme(P ~ impact*f.time, random=~1|nest, 
+           na.action=na.omit, data=sm, weights=vf10)
 
-M2.11<-lme(P ~ impact+f.time, random=~1|nest, 
-          na.action=na.omit, data=sm, weights=vf11)
+M4.11<-lme(P ~ impact*f.time, random=~1|nest, 
+           na.action=na.omit, data=sm, weights=vf11)
 
-anova(M2,M2.1,M2.2,M2.3,M2.4,M2.5,M2.6,M2.7,M2.8,M2.9,M2.10,M2.11)
-#M1.10 is best with varIdent as a function of time
+#4.3 and 4.5 go to convergence
+anova(M4,M4.1,M4.2,M4.4,M4.6,M4.7,M4.8,M4.9,M4.10,M4.11)
+#M4.6 is best with varIdent as a function of impact
 
-E2.10<-residuals(M2.10)
+E4.6<-residuals(M4.6)
 
 plot(filter(sm, !is.na(P)) %>%dplyr::select(location),
-     E2.10, xlab="Location", ylab="Residuals")
+     E4.6, xlab="Location", ylab="Residuals")
 plot(filter(sm, !is.na(P)) %>%dplyr::select(impact),
-     E2.10, xlab="Location", ylab="Residuals")
+     E4.6, xlab="Location", ylab="Residuals")
 
-qqnorm(residuals(M2.10))
-qqline(residuals(M2.10))
-ad.test(residuals(M2.10))
+qqnorm(residuals(M4.6))
+qqline(residuals(M4.6))
+ad.test(residuals(M4.6))
 
 x<-sm$P[!is.na(sm$P)]#removes na values from column
-E2.10<-residuals(M2.10,type="normalized")
-plot(M2.10) #residuals vs fitted values
-plot(x, E2.10)
+EM4.6<-residuals(M4.6,type="normalized")
+plot(M4.6) #residuals vs fitted values
+plot(x, M4.6)
 
-summary(M2.10)
+summary(M4.6)
 
 #Auto Correlation Plot
-E2.10<-residuals(M2.10)
+E4.6<-residuals(M4.6)
 x<-!is.na(sm$P)
 Efull<-vector(length=length(sm$P))
 Efull<-NA
-Efull[x]<-E2.10
+Efull[x]<-E4.6
 acf(Efull, na.action=na.pass,
     main="Auto-correlation plot for residuals")
 
-#but we will group by categorical time for graphing purposes
+##################################Line Plot from Origianl Analysis#######################################
+
+#we will group by categorical time for graphing purposes
 x <- group_by(sm, impact, f.time) %>%  # Grouping function causes subsequent functions to aggregate by season and reach
   summarize(P.mean = mean(P, na.rm = TRUE), # na.rm = TRUE to remove missing values
             P.sd=sd(P, na.rm = TRUE),  # na.rm = TRUE to remove missing values
@@ -194,49 +202,51 @@ ggsave('srp.tiff',
        dpi=1200,
        compression="lzw")
 
-#### Go to Chapter 6 for Violation of Indpendence
+
+######################### Violation of Indpendence ###################################
 
 #Dealing with Temporal Correlation
 
 M3<-gls(P ~ impact+f.time, 
         na.action=na.omit, data=sm, correlation=corCompSymm(form=~f.time))
 
-M4<-gls(P ~ impact+f.time, 
-        na.action=na.omit, data=sm, correlation=corAR1(form=~f.time))
-#Doesn't work
+M4.6<-lme(P ~ impact*f.time, random=~1|nest, 
+          na.action=na.omit, data=sm, weights=vf6)
 
-M2.12<-lme(P ~ impact+f.time,random=~1|nest, 
-           na.action=na.omit, data=sm, weights=vf10, correlation=corCompSymm(form=~f.time))
+M4.12<-lme(P ~ impact*f.time,random=~1|nest, 
+           na.action=na.omit, data=sm, weights=vf6, correlation=corCompSymm(form=~f.time))
 
-M2.12b<-lme(P ~ impact+f.time, random=~1|nest, 
+M4.13<-lme(P ~ impact*f.time, random=~1|nest, 
            na.action=na.omit, data=sm, correlation=corCompSymm(form=~f.time))
 
-M1.13<-lme(P ~ impact+f.time, random=~1|nest, 
-           na.action=na.omit, data=sm, weights=vf10, correlation=corAR1(form=~f.time))
-#Doesn't Work
 
 cs1<-corARMA(c(0.2), p=1, q=0)
 cs2<-corARMA(c(0.3, -0.3), p=2, q=0)
 
-M2.14<-lme(P ~ impact+f.time, random=~1|nest, 
-           na.action=na.omit, data=sm, weights=vf10, correlation=cs1)
+M4.14<-lme(P ~ impact*f.time, random=~1|nest, 
+           na.action=na.omit, data=sm, weights=vf6, correlation=cs1)
 
-E2.14<-residuals(M2.14)
+M4.15<-lme(P ~ impact*f.time, random=~1|nest, 
+           na.action=na.omit, data=sm, weights=vf6, correlation=cs2)
+
+#M4.12 and 4.15 go to convergence
+anova(M4.6,M4.13,M4.14)
+
+#M4.6 is still lower in AIC
+#Look at M4.14
+E4.14<-residuals(M4.14)
 
 plot(filter(sm, !is.na(P)) %>%dplyr::select(location),
-     E2.14, xlab="Location", ylab="Residuals")
+     E4.14, xlab="Location", ylab="Residuals")
 plot(filter(sm, !is.na(P)) %>%dplyr::select(impact),
-     E2.14, xlab="Location", ylab="Residuals")
+     E4.14, xlab="Location", ylab="Residuals")
 
-qqnorm(residuals(M2.14))
-qqline(residuals(M2.14))
-ad.test(residuals(M2.14))
+qqnorm(residuals(M4.14))
+qqline(residuals(M4.14))
+ad.test(residuals(M4.14))
 
-M2.15<-lme(P ~ impact+f.time, random=~1|nest, 
-           na.action=na.omit, data=sm, weights=vf10, correlation=cs2)
-
-anova(M2.10,M2.12,M2.12b,M3,M2.14,M2.15)
-#2.10 is best model
+anova(M4.6,M4.14)
+#4.6 is best model
 
 E3<-residuals(M3)
 
@@ -249,17 +259,29 @@ qqnorm(residuals(M3))
 qqline(residuals(M3))
 ad.test(residuals(M3))
 
-#Try log normalized data
+######################################Try log normalized data###############################################
 
-M0<-gls(log.P ~ impact+f.time, 
-        na.action=na.omit, data=sm, method="ML")
+sm$log.P<-log10(sm$P)
 
 M1<-lme(log.P ~ impact+f.time, 
         random=~ 1 | location, na.action=na.omit, data=sm, method="ML")
 
-anova(M0,M1)
+#try nesting
 
-#M1 is better
+M2<-lme(log.P ~ impact+f.time, random=~1|nest, 
+        na.action=na.omit, data=sm, method="ML")
+
+#try interaction with random factor
+
+M3<-lme(log.P ~ impact*f.time, 
+        random=~ 1 | location, na.action=na.omit, data=sm, method="ML")
+
+M4<-lme(log.P ~ impact*f.time, random=~1|nest, 
+        na.action=na.omit, data=sm, method="ML")
+
+anova(M1,M2,M3,M4,M4.6)
+
+#M2 is better
 
 M2<-lme(log.P ~ impact+f.time, random=~1|nest, 
         na.action=na.omit, data=sm, method="ML")
@@ -321,17 +343,32 @@ qqnorm(residuals(M2.11))
 qqline(residuals(M2.11))
 ad.test(residuals(M2.11))
 
-#try log of 5th root
+############################try log of 5th root####################################
 
-M0<-gls(log.P.5th ~ impact+f.time, 
-        na.action=na.omit, data=sm, method="ML")
+sm$P.5th<-(sm$P)^(1/5)
+sm$log.p.5th<-log10(sm$P.5th)
 
-M1<-lme(log.P.5th ~ impact+f.time, 
+M1<-lme(log.p.5th ~ impact+f.time, 
         random=~ 1 | location, na.action=na.omit, data=sm, method="ML")
 
-anova(M0,M1)
+#try random factor and nesting
 
-#M1 is better
+M2<-lme(log.p.5th ~ impact+f.time, random=~1|nest, 
+        na.action=na.omit, data=sm, method="ML")
+
+#try interaction with random factor
+
+M3<-lme(log.p.5th ~ impact*f.time, 
+        random=~ 1 | location, na.action=na.omit, data=sm, method="ML")
+
+#try interaction with random factor and nesting
+
+M4<-lme(log.p.5th ~ impact*f.time, random=~1|nest, 
+        na.action=na.omit, data=sm, method="ML")
+
+anova(M1,M2,M3,M4)
+
+#M2 is better
 
 M2<-lme(log.P.5th ~ impact+f.time, random=~1|nest, 
         na.action=na.omit, data=sm, method="ML")
@@ -377,7 +414,6 @@ M2.9<-lme(log.P.5th ~ impact+f.time, random=~1|nest,
 
 M2.10<-lme(log.P.5th ~ impact+f.time, random=~1|nest, 
            na.action=na.omit, data=sm, weights=vf10)
-#cant compute
 
 M2.11<-lme(log.P.5th ~ impact+f.time, random=~1|nest, 
            na.action=na.omit, data=sm, weights=vf11)
@@ -444,7 +480,7 @@ ad.test(residuals(M1.11))
 #Get Full Model Statistics and Make Graph
 #####################################################
 #final model
-M.full<-lme(log.P.5th ~ impact*f.time, 
+M.full<-lme(log.P.5th ~ impact+f.time, 
             random=~ 1 | location, na.action=na.omit, data=sm, weights=vf11)
 
 anova(M.full)
