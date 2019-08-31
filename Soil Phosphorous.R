@@ -346,7 +346,8 @@ ad.test(residuals(M2.11))
 ############################try log of 5th root####################################
 
 sm$P.5th<-(sm$P)^(1/5)
-sm$log.p.5th<-log10(sm$P.5th)
+sm$log.P.5th<-log10(sm$P.5th)
+#CPA - there was a typo that named this lower case p instead of upper case P as written in code below
 
 M1<-lme(log.p.5th ~ impact+f.time, 
         random=~ 1 | location, na.action=na.omit, data=sm, method="ML")
@@ -502,6 +503,11 @@ event = c(1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8)
 log.P.5th.emm = data.frame(cbind(xx,impact,event))
 log.P.5th.emm$emmean.raw = 10^((log.P.5th.emm$emmean)^5)
 log.P.5th.emm$SE.raw = 10^((log.P.5th.emm$SE)^5)
+#CPA - those are grouped wrong.  should be
+#log.P.5th.emm$emmean.raw = (10^(log.P.5th.emm$emmean))^5
+#etc.  that will change your plot below since the error bars will be going in the other direction
+
+
 
 #this is the final table you can use for plotting
 log.P.5th.emm
