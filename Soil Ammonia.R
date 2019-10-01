@@ -431,7 +431,7 @@ pd=position_dodge(0.1)
 ggplot(data=x, 
        aes(x=cat.time, y=emmean.raw, fill=impact)) + 
   geom_bar(stat="identity", position=position_dodge(), color = "black") + 
-  geom_errorbar(aes(ymin=emmean.raw, ymax=emmean.raw-SE.raw), width=0.2, 
+  geom_errorbar(aes(ymin=emmean.raw, ymax=emmean.raw+SE.raw), width=0.2, 
                 position=position_dodge(0.9)) + 
   scale_fill_manual(values=c("black","white")) +
   xlab("Sample Event") +
@@ -441,7 +441,7 @@ ggplot(data=x,
   geom_hline(yintercept=0)+
   theme(panel.grid.major=element_blank(),
         panel.grid.minor=element_blank(),
-        legend.title=element_text(size=6),
+        legend.title=element_text(size=8),
         legend.key=element_blank(),
         legend.position=c(0.5,0.95),
         legend.text=element_text(size=8),

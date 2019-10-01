@@ -279,7 +279,7 @@ M3<-lme(log.P ~ impact*f.time,
 M4<-lme(log.P ~ impact*f.time, random=~1|nest, 
         na.action=na.omit, data=sm, method="ML")
 
-anova(M1,M2,M3,M4,M4.6)
+anova(M1,M2,M3,M4)
 
 #M2 is better
 
@@ -349,22 +349,22 @@ sm$P.5th<-(sm$P)^(1/5)
 sm$log.P.5th<-log10(sm$P.5th)
 #CPA - there was a typo that named this lower case p instead of upper case P as written in code below
 
-M1<-lme(log.p.5th ~ impact+f.time, 
+M1<-lme(log.P.5th ~ impact+f.time, 
         random=~ 1 | location, na.action=na.omit, data=sm, method="ML")
 
 #try random factor and nesting
 
-M2<-lme(log.p.5th ~ impact+f.time, random=~1|nest, 
+M2<-lme(log.P.5th ~ impact+f.time, random=~1|nest, 
         na.action=na.omit, data=sm, method="ML")
 
 #try interaction with random factor
 
-M3<-lme(log.p.5th ~ impact*f.time, 
+M3<-lme(log.P.5th ~ impact*f.time, 
         random=~ 1 | location, na.action=na.omit, data=sm, method="ML")
 
 #try interaction with random factor and nesting
 
-M4<-lme(log.p.5th ~ impact*f.time, random=~1|nest, 
+M4<-lme(log.P.5th ~ impact*f.time, random=~1|nest, 
         na.action=na.omit, data=sm, method="ML")
 
 anova(M1,M2,M3,M4)
@@ -464,15 +464,15 @@ M1.10<-lme(log.P.5th ~ impact+f.time,
 M1.11<-lme(log.P.5th ~ impact+f.time, 
            random=~ 1 | location, na.action=na.omit, data=sm, weights=vf11)
 
-anova(M1.1,M1.2,M1.3,M1.4,M1.5,M1.6,M1.7,M1.8,M1.9,M1.10,M1.11)
+anova(M1.1,M1.2,M1.3,M1.4,M1.5,M1.6,M1.7,M1.8,M1.9,M1.11)
 #Look at 1, 2, 4, 5, 6, 10, 11
 
 
-E1.11<-residuals(M1.11)
+E1.6<-residuals(M1.6)
 
-qqnorm(residuals(M1.11))
-qqline(residuals(M1.11))
-ad.test(residuals(M1.11))
+qqnorm(residuals(M1.6))
+qqline(residuals(M1.6))
+ad.test(residuals(M1.6))
 
 #Log does not work for M1 or M2
 #Log of the 5th root does not work for M1 or M2
@@ -501,8 +501,8 @@ impact<-recode(impact, "b" ="Low")
 event = c(1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8)
 
 log.P.5th.emm = data.frame(cbind(xx,impact,event))
-log.P.5th.emm$emmean.raw = 10^((log.P.5th.emm$emmean)^5)
-log.P.5th.emm$SE.raw = 10^((log.P.5th.emm$SE)^5)
+log.P.5th.emm$emmean.raw = (10^(log.P.5th.emm$emmean))^5
+log.P.5th.emm$SE.raw = (10^(log.P.5th.emm$emmean))^5
 #CPA - those are grouped wrong.  should be
 #log.P.5th.emm$emmean.raw = (10^(log.P.5th.emm$emmean))^5
 #etc.  that will change your plot below since the error bars will be going in the other direction
@@ -527,7 +527,7 @@ pd=position_dodge(0.1)
 ggplot(data=x, 
        aes(x=cat.time, y=emmean.raw, fill=impact)) + 
   geom_bar(stat="identity", position=position_dodge(), color = "black") + 
-  geom_errorbar(aes(ymin=emmean.raw, ymax=emmean.raw-SE.raw), width=0.2, 
+  geom_errorbar(aes(ymin=emmean.raw, ymax=emmean.raw+SE.raw), width=0.2, 
                 position=position_dodge(0.9)) + 
   scale_fill_manual(values=c("black","white")) +
   xlab("Sample Event") +
@@ -537,9 +537,9 @@ ggplot(data=x,
   geom_hline(yintercept=0)+
   theme(panel.grid.major=element_blank(),
         panel.grid.minor=element_blank(),
-        legend.title=element_text(size=6),
+        legend.title=element_text(size=8),
         legend.key=element_blank(),
-        legend.position=c(0.5,0.95),
+        legend.position=c(0.5,0.98),
         legend.text=element_text(size=8),
         legend.background=element_blank(),
         legend.direction="horizontal",

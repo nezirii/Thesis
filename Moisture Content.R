@@ -8,6 +8,7 @@ sm$f.time<-factor(sm$time)
 sm$f.plot<-factor(sm$plot)
 sm$nest <- with(sm, factor(paste(location,f.plot)))
 
+
 #install packages
 
 install.packages("nlme")
@@ -17,7 +18,9 @@ install.packages("dplyr")
 install.packages("nortest")
 install.packages("ggplot2")
 install.packages("multcomp")
-install.packages("MASS")
+install.packages("MuMIn")
+install.packages("emmeans")
+
 library(nlme)
 library(lme4)
 library(lmerTest)
@@ -25,7 +28,8 @@ library(dplyr)
 library(nortest)
 library(ggplot2)
 library(multcomp)
-library(MASS)
+library(MuMIn)
+library(emmeans)
 
 #means plot
 
@@ -76,41 +80,49 @@ ggsave('moisture.tiff',
        compression="lzw")
 
 #Look at mixed effects model
-
 #start without random factor
 M0<-gls(pct.moisture ~ impact+f.time, 
         na.action=na.omit, data=sm, method="ML")
 
-#add random factor
+#add random factor - refer to chapter 5 of zuur
 
 M1<-lme(pct.moisture ~ impact+f.time, 
         random=~ 1 | location, na.action=na.omit, data=sm, method="ML")
 
 #try nesting
+
 M2<-lme(pct.moisture ~ impact+f.time, random=~1|nest, 
         na.action=na.omit, data=sm, method="ML")
 
-anova(M0,M2)
+#try interaction with random factor
 
-#M2 looks the best
+M3<-lme(pct.moisture ~ impact*f.time, 
+        random=~ 1 | location, na.action=na.omit, data=sm, method="ML")
+
+M4<-lme(pct.moisture ~ impact*f.time, random=~1|nest, 
+        na.action=na.omit, data=sm, method="ML")
+
+anova(M0,M1,M2,M3,M4)
+
+#M4 looks the best
 
 #Look at residuals
 
-E2<-residuals(M2)
+E4<-residuals(M4)
 
 plot(filter(sm, !is.na(pct.moisture)) %>%dplyr::select(location),
-     E2, xlab="Location", ylab="Residuals")
+     E4, xlab="Location", ylab="Residuals")
 plot(filter(sm, !is.na(pct.moisture)) %>%dplyr::select(impact),
-     E2, xlab="Location", ylab="Residuals")
+     E4, xlab="Location", ylab="Residuals")
 
-qqnorm(residuals(M2))
-qqline(residuals(M2))
-ad.test(residuals(M2))
+qqnorm(residuals(M4))
+qqline(residuals(M4))
+ad.test(residuals(M4))
 
 x<-sm$pct.moisture[!is.na(sm$pct.moisture)]#removes na values from column
-E2<-residuals(M2,type="normalized")
-plot(M2) #residuals vs fitted values
-plot(x, E2)
+E4<-residuals(M4,type="normalized")
+plot(M4) #residuals vs fitted values
+plot(x, E4)
 
 #try alternate variance structures
 vf1=varIdent(form=~1|impact)
@@ -125,69 +137,69 @@ vf9=varExp(form=~fitted(.)|time)
 vf10=varConstPower(form=~ fitted(.)|impact)
 vf11=varConstPower(form=~ fitted(.)|time)
 
-M2<-lme(pct.moisture ~ impact+f.time, random=~1|nest,
-        na.action=na.omit, data=sm)
+M4<-lme(pct.moisture ~ impact*f.time, random=~1|nest, 
+        na.action=na.omit, data=sm, method="ML")
 
-M2.1<-lme(pct.moisture ~ impact+f.time, random=~1|nest, 
+M4.1<-lme(pct.moisture ~ impact*f.time, random=~1|nest, 
           na.action=na.omit, data=sm, weights=vf1)
 
-M2.2<-lme(pct.moisture ~ impact+f.time, random=~1|nest, 
+M4.2<-lme(pct.moisture ~ impact*f.time, random=~1|nest, 
           na.action=na.omit, data=sm, weights=vf2)
 
-M2.3<-lme(pct.moisture ~ impact+f.time, random=~1|nest, 
+M4.3<-lme(pct.moisture ~ impact*f.time, random=~1|nest, 
           na.action=na.omit, data=sm, weights=vf3)
 
-M2.4<-lme(pct.moisture ~ impact+f.time, random=~1|nest, 
+M4.4<-lme(pct.moisture ~ impact*f.time, random=~1|nest, 
           na.action=na.omit, data=sm, weights=vf4)
 
-M2.5<-lme(pct.moisture ~ impact+f.time, random=~1|nest, 
+M4.5<-lme(pct.moisture ~ impact*f.time, random=~1|nest, 
           na.action=na.omit, data=sm, weights=vf5)
 
-M2.6<-lme(pct.moisture ~ impact+f.time, random=~1|nest, 
+M4.6<-lme(pct.moisture ~ impact*f.time, random=~1|nest, 
           na.action=na.omit, data=sm, weights=vf6)
 
-M2.7<-lme(pct.moisture ~ impact+f.time, random=~1|nest, 
+M4.7<-lme(pct.moisture ~ impact*f.time, random=~1|nest, 
           na.action=na.omit, data=sm, weights=vf7)
 
-M2.8<-lme(pct.moisture ~ impact+f.time, random=~1|nest, 
+M4.8<-lme(pct.moisture ~ impact*f.time, random=~1|nest, 
           na.action=na.omit, data=sm, weights=vf8)
 
-M2.9<-lme(pct.moisture ~ impact+f.time, random=~1|nest, 
+M4.9<-lme(pct.moisture ~ impact*f.time, random=~1|nest, 
           na.action=na.omit, data=sm, weights=vf9)
 
-M2.10<-lme(pct.moisture ~ impact+f.time, random=~1|nest, 
+M4.10<-lme(pct.moisture ~ impact*f.time, random=~1|nest, 
            na.action=na.omit, data=sm, weights=vf10)
 
-M2.11<-lme(pct.moisture ~ impact+f.time, random=~1|nest, 
+M4.11<-lme(pct.moisture ~ impact*f.time, random=~1|nest, 
            na.action=na.omit, data=sm, weights=vf11)
 
-anova(M2,M2.1,M2.2,M2.3,M2.4,M2.5,M2.6,M2.7,M2.8,M2.9,M2.10,M2.11)
-#M2.7 is best with varIdent as a function of time
+anova(M4.1,M4.2,M4.3,M4.4,M4.5,M4.6,M4.7,M4.8,M4.9,M4.10,M4.11)
+#M4.7 is best with varIdent as a function of time
 
-E2.7<-residuals(M2.7)
+E4.7<-residuals(M4.7)
 
 plot(filter(sm, !is.na(pct.moisture)) %>%dplyr::select(location),
-     E2.7, xlab="Location", ylab="Residuals")
+     E4.7, xlab="Location", ylab="Residuals")
 plot(filter(sm, !is.na(pct.moisture)) %>%dplyr::select(impact),
-     E2.7, xlab="Location", ylab="Residuals")
+     E4.7, xlab="Location", ylab="Residuals")
 
-qqnorm(residuals(M2.7))
-qqline(residuals(M2.7))
-ad.test(residuals(M2.7))
+qqnorm(residuals(M4.7))
+qqline(residuals(M4.7))
+ad.test(residuals(M4.7))
 
 x<-sm$pct.moisture[!is.na(sm$pct.moisture)]#removes na values from column
-E2.7<-residuals(M2.7,type="normalized")
-plot(M2.7) #residuals vs fitted values
-plot(x, E2.7)
+E4.7<-residuals(M4.7,type="normalized")
+plot(M4.7) #residuals vs fitted values
+plot(x, E4.7)
 
-summary(M2.7)
+summary(M4.7)
 
 #Auto Correlation Plot
-E2.7<-residuals(M2.7)
+E4.7<-residuals(M4.7)
 x<-!is.na(sm$pct.moisture)
 Efull<-vector(length=length(sm$pct.moisture))
 Efull<-NA
-Efull[x]<-E2.7
+Efull[x]<-E4.7
 acf(Efull, na.action=na.pass,
     main="Auto-correlation plot for residuals")
 
@@ -200,148 +212,211 @@ M4<-gls(pct.moisture ~ impact+f.time,
         na.action=na.omit, data=sm, correlation=corAR1(form=~f.time))
 #Doesn't work
 
-M2.12<-lme(pct.moisture ~ impact+f.time, random=~1|nest, 
+M4.12<-lme(pct.moisture ~ impact*f.time, random=~1|nest, 
            na.action=na.omit, data=sm, weights=vf7, correlation=corCompSymm(form=~f.time))
-#Doesn't work
 
-M2.13<-lme(pct.moisture ~ impact+f.time, random=~1|nest, 
+M4.13<-lme(pct.moisture ~ impact*f.time, random=~1|nest, 
            na.action=na.omit, data=sm, weights=vf7, correlation=corAR1(form=~f.time))
-#Doesn't Work
 
 cs1<-corARMA(c(0.2), p=0, q=0)
 cs2<-corARMA(c(0.2), p=0, q=1)
-cs3<-corARMA(c(0.2), p=0, q=2)
 cs4<-corARMA(c(0.2), p=1, q=0)
-cs5<-corARMA(c(0.2), p=1, q=1)
-cs6<-corARMA(c(0.2), p=1, q=2)
-cs7<-corARMA(c(0.2), p=2, q=0)
-cs8<-corARMA(c(0.2), p=2, q=1)
-cs9<-corARMA(c(0.2), p=2, q=2)
 
 
-M2.14<-lme(pct.moisture ~ impact+f.time, random=~1|nest, 
-           na.action=na.omit, data=sm, weights=vf7, correlation=cs1)
+M4.14<-lme(pct.moisture ~ impact*f.time, random=~1|nest, 
+           na.action=na.omit, data=sm, weights=vf7, correlation=cs1) #No
 
-M2.15<-lme(pct.moisture ~ impact+f.time, random=~1|nest, 
+M4.15<-lme(pct.moisture ~ impact*f.time, random=~1|nest, 
            na.action=na.omit, data=sm, weights=vf7, correlation=cs2)
 
-M2.16<-lme(pct.moisture ~ impact+f.time, random=~1|nest, 
-           na.action=na.omit, data=sm, weights=vf7, correlation=cs3)
-
-M2.17<-lme(pct.moisture ~ impact+f.time, random=~1|nest, 
+M4.16<-lme(pct.moisture ~ impact*f.time, random=~1|nest, 
            na.action=na.omit, data=sm, weights=vf7, correlation=cs4)
 
-M2.18<-lme(pct.moisture ~ impact+f.time, random=~1|nest, 
-           na.action=na.omit, data=sm, weights=vf7, correlation=cs5)
+summary(M4.12)
 
-M2.19<-lme(pct.moisture ~ impact+f.time, random=~1|nest, 
-           na.action=na.omit, data=sm, weights=vf7, correlation=cs6)
+E4.12<-residuals(M4.12)
 
-M2.20<-lme(pct.moisture ~ impact+f.time, random=~1|nest, 
-           na.action=na.omit, data=sm, weights=vf7, correlation=cs7)
+plot(filter(sm, !is.na(pct.moisture)) %>%dplyr::select(location),
+     E4.12, xlab="Location", ylab="Residuals")
+plot(filter(sm, !is.na(pct.moisture)) %>%dplyr::select(impact),
+     E4.12, xlab="Location", ylab="Residuals")
 
-M2.21<-lme(pct.moisture ~ impact+f.time, random=~1|nest, 
-           na.action=na.omit, data=sm, weights=vf7, correlation=cs8)
+qqnorm(residuals(M4.12))
+qqline(residuals(M4.12))
+ad.test(residuals(M4.12))
 
-M2.22<-lme(pct.moisture ~ impact+f.time, random=~1|nest, 
-           na.action=na.omit, data=sm, weights=vf7, correlation=cs9)
+x<-sm$pct.moisture[!is.na(sm$pct.moisture)]#removes na values from column
+E4.12<-residuals(M4.7,type="normalized")
+plot(M4.12) #residuals vs fitted values
+plot(x, E4.12)
 
-anova(M2.7,M3,M2.14,M2.15)
-#M2.14 is still the best model
+summary(M4.12)
 
-#Log normalized data
+#M4.12 is still the best model AIC -489
 
-M0<-gls(log.pct.moisture ~ impact+f.time, 
-        na.action=na.omit, data=sm, method="ML")
+#################################################Log normalized data#############################################
+
+sm$log.pct.moisture<-log10(sm$pct.moisture)
 
 M1<-lme(log.pct.moisture ~ impact+f.time, 
         random=~ 1 | location, na.action=na.omit, data=sm, method="ML")
 
-M2<-lmer(log.pct.moisture ~ impact+f.time + 
-           (f.plot|location), 
-         na.action=na.omit, data=sm)
+#try nesting
 
-anova(M0,M1)
-#M1 is the best model
+M2<-lme(log.pct.moisture ~ impact+f.time, random=~1|nest, 
+        na.action=na.omit, data=sm, method="ML")
 
-E1<-residuals(M1)
+#try interaction with random factor
+
+M3<-lme(log.pct.moisture ~ impact*f.time, 
+        random=~ 1 | location, na.action=na.omit, data=sm, method="ML")
+
+M4<-lme(log.pct.moisture ~ impact*f.time, random=~1|nest, 
+        na.action=na.omit, data=sm, method="ML")
+
+anova(M1,M2,M3,M4)
+
+#########M4 is best
+
+E4<-residuals(M4)
 
 plot(filter(sm, !is.na(log.pct.moisture)) %>%dplyr::select(location),
-     E1, xlab="Location", ylab="Residuals")
+     E4, xlab="Location", ylab="Residuals")
 plot(filter(sm, !is.na(log.pct.moisture)) %>%dplyr::select(impact),
-     E1, xlab="Location", ylab="Residuals")
+     E4, xlab="Location", ylab="Residuals")
 
-qqnorm(residuals(M1))
-qqline(residuals(M1))
-ad.test(residuals(M1))
+qqnorm(residuals(M4))
+qqline(residuals(M4))
+ad.test(residuals(M4))
 
-summary(M1)
+summary(M4)
 
 #Try alternate variance structures
 
-M1<-lme(log.pct.moisture ~ impact+f.time, 
+M4<-lme(log.pct.moisture ~ impact+f.time, 
         random=~ 1 | location, na.action=na.omit, data=sm, method="ML")
 
-M1.1<-lme(log.pct.moisture ~ impact+f.time, 
+M4.1<-lme(log.pct.moisture ~ impact*f.time, 
         random=~ 1 | location, na.action=na.omit, data=sm, weights=vf1, method="ML")
 
-M1.2<-lme(log.pct.moisture ~ impact+f.time, 
+M4.2<-lme(log.pct.moisture ~ impact*f.time, 
         random=~ 1 | location, na.action=na.omit, data=sm, weights=vf2, method="ML")
 
-M1.3<-lme(log.pct.moisture ~ impact+f.time, 
+M4.3<-lme(log.pct.moisture ~ impact*f.time, 
         random=~ 1 | location, na.action=na.omit, data=sm, weights=vf3, method="ML")
 
-M1.4<-lme(log.pct.moisture ~ impact+f.time, 
+M4.4<-lme(log.pct.moisture ~ impact8f.time, 
         random=~ 1 | location, na.action=na.omit, data=sm, weights=vf4, method="ML")
 
-M1.5<-lme(log.pct.moisture ~ impact+f.time, 
+M4.5<-lme(log.pct.moisture ~ impact*f.time, 
         random=~ 1 | location, na.action=na.omit, data=sm, weights=vf5, method="ML")
 
-M1.6<-lme(log.pct.moisture ~ impact+f.time, 
+M4.6<-lme(log.pct.moisture ~ impact*f.time, 
         random=~ 1 | location, na.action=na.omit, data=sm, weights=vf6, method="ML")
 
-M1.7<-lme(log.pct.moisture ~ impact+f.time, 
+M4.7<-lme(log.pct.moisture ~ impact*f.time, 
         random=~ 1 | location, na.action=na.omit, data=sm, weights=vf7, method="ML")
 
-M1.8<-lme(log.pct.moisture ~ impact+f.time, 
+M4.8<-lme(log.pct.moisture ~ impact*f.time, 
         random=~ 1 | location, na.action=na.omit, data=sm, weights=vf8, method="ML")
 
-M1.9<-lme(log.pct.moisture ~ impact+f.time, 
+M4.9<-lme(log.pct.moisture ~ impact*f.time, 
         random=~ 1 | location, na.action=na.omit, data=sm, weights=vf9, method="ML")
 
-M1.10<-lme(log.pct.moisture ~ impact+f.time, 
+M4.10<-lme(log.pct.moisture ~ impact*f.time, 
         random=~ 1 | location, na.action=na.omit, data=sm, weights=vf10, method="ML")
 
-M1.11<-lme(log.pct.moisture ~ impact+f.time, 
+M4.11<-lme(log.pct.moisture ~ impact*f.time, 
         random=~ 1 | location, na.action=na.omit, data=sm, weights=vf11, method="ML")
 
-anova(M1,M1.1,M1.2,M1.3,M1.4,M1.5,M1.6,M1.7,M1.8,M1.9,M1.10,M1.11)
+anova(M4,M4.1,M4.2,M4.3,M4.5,M4.6,M4.7,M4.8,M4.9,M4.10,M4.11)
 
-E1.1<-residuals(M1.1)
+E4.7<-residuals(M4.7)
 
 plot(filter(sm, !is.na(log.pct.moisture)) %>%dplyr::select(location),
-     E1.1, xlab="Location", ylab="Residuals")
+     E4.7, xlab="Location", ylab="Residuals")
 plot(filter(sm, !is.na(log.pct.moisture)) %>%dplyr::select(impact),
-     E1.1, xlab="Location", ylab="Residuals")
+     E4.7, xlab="Location", ylab="Residuals")
 
-qqnorm(residuals(M1.1))
-qqline(residuals(M1.1))
-ad.test(residuals(M1.1))
+qqnorm(residuals(M4.7))
+qqline(residuals(M4.7))
+ad.test(residuals(M4.7))
 
-#After Trying models that had lower AIC scores with signifcant p-values, M1.1 was the best fit
+####################### Log normalized M4 best
 
-#Run Post Hoc
+#####################################################
+#Get Full Model Statistics and Make Graph
+#####################################################
+#final model
+M.full<-lme(log.pct.moisture ~ impact+f.time, 
+            random=~ 1 | location, na.action=na.omit, data=sm, method="ML")
 
-model.matrix.lme <- function(M1.1, ...){
-  model.matrix(terms(M1.1), data = getData(M1.1), ...)  
-}
-model.frame.lme <- function(M1.1, ...){
-  model.frame(formula(M1.1), data = getData(M1.1), ...)  
-}
-terms.lme <- function(M1.1, ...){
-  terms(model.frame(M1.1),...)  
-}
+anova(M.full)
 
-multCompTukey <- glht(M1.1, linfct = mcp(time = "Tukey")) 
+#this extracts what you need to look at pairwise differences and make a graphic
+M.full.em = emmeans(M.full, ~ f.time | impact)
 
-summary(multCompTukey)
+#this shows each pairwise difference (high v. low budworm at each sample event
+pairs(M.full.em)
+
+#the next several lines are building a table you can use in ggplot
+xx = as.data.frame(summary(M.full.em))[c('emmean', 'SE')]
+
+impact = rep((letters[seq(from = 1, to = 2)]), 8)
+impact<-recode(impact, "a" ="High")
+impact<-recode(impact, "b" ="Low")
+event = c(1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8)
+
+log.pct.moisture.emm = data.frame(cbind(xx,impact,event))
+log.pct.moisture.emm$emmean.raw = (10^(log.pct.moisture.emm$emmean))
+log.pct.moisture.emm$SE.raw = (10^(log.pct.moisture.emm$emmean))
+
+
+#this is the final table you can use for plotting
+log.pct.moisture.emm
+
+x = log.pct.moisture.emm
+
+#make a new vector with the categorical times.  you'll need to adjust this 
+#for your soil graphics
+cat.time<-c("11Sep15", "11Sep15", "11Oct15", "11Oct15", "8Nov15", "8Nov15", "8May16", "8May16", "13Jun16", "13Jun16", "4Aug16", "4Aug16", "19Sep16", "19Sep16", "6Nov16", "6Nov16")
+#force the new vector to be characters
+x$cat.time<-as.character(cat.time)
+#force the new vector to be ordered in the order you gave it instead of alphabetical
+x$cat.time<-factor(x$cat.time, levels=unique(x$cat.time))
+
+pd=position_dodge(0.1)
+
+ggplot(data=x, 
+       aes(x=cat.time, y=emmean.raw, fill=impact)) + 
+  geom_bar(stat="identity", position=position_dodge(), color = "black") + 
+  geom_errorbar(aes(ymin=emmean.raw, ymax=emmean.raw+SE.raw), width=0.2, 
+                position=position_dodge(0.9)) + 
+  scale_fill_manual(values=c("black","white")) +
+  xlab("Sample Event") +
+  ylab("Soil Moisture(%)") +
+  labs(fill="Budworm Activity") +
+  theme_bw() +
+  geom_hline(yintercept=0)+
+  theme(panel.grid.major=element_blank(),
+        panel.grid.minor=element_blank(),
+        legend.title=element_text(size=8),
+        legend.key=element_blank(),
+        legend.position=c(0.5,0.98),
+        legend.text=element_text(size=8),
+        legend.background=element_blank(),
+        legend.direction="horizontal",
+        legend.key.size=unit(0.3, "cm"),
+        axis.title.y=element_text(size=8),
+        axis.title.x=element_text(size=8),
+        axis.text.x=element_text(size=8))
+
+
+#this will save the file
+ggsave('figures/emmnetdinTFflux.tiff',
+       units="in",
+       width=5.5,
+       height=4.5,
+       dpi=1200,
+       compression="lzw")
+

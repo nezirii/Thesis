@@ -8,6 +8,7 @@ sm$f.time<-factor(sm$time)
 sm$f.plot<-factor(sm$plot)
 sm$nest <- with(sm, factor(paste(location,f.plot)))
 
+
 #install packages
 
 install.packages("nlme")
@@ -16,12 +17,19 @@ install.packages("lmerTest")
 install.packages("dplyr")
 install.packages("nortest")
 install.packages("ggplot2")
+install.packages("multcomp")
+install.packages("MuMIn")
+install.packages("emmeans")
+
 library(nlme)
 library(lme4)
 library(lmerTest)
 library(dplyr)
 library(nortest)
 library(ggplot2)
+library(multcomp)
+library(MuMIn)
+library(emmeans)
 
 #Look at mixed effects model
 #start without random factor
@@ -33,30 +41,40 @@ M0<-gls(N.P ~ impact+f.time,
 M1<-lme(N.P ~ impact+f.time, 
         random=~ 1 | location, na.action=na.omit, data=sm, method="ML")
 
+#try nesting
+
 M2<-lme(N.P ~ impact+f.time, random=~1|nest, 
         na.action=na.omit, data=sm, method="ML")
 
-anova(M0,M2)
+#try interaction with random factor
 
-#M2 looks the best
+M3<-lme(N.P ~ impact*f.time, 
+        random=~ 1 | location, na.action=na.omit, data=sm, method="ML")
+
+M4<-lme(N.P ~ impact*f.time, random=~1|nest, 
+        na.action=na.omit, data=sm, method="ML")
+
+anova(M1,M2,M3,M4)
+
+#M4 looks the best
 
 #Look at residuals
 
-E2<-residuals(M2)
+E4<-residuals(M4)
 
 plot(filter(sm, !is.na(N.P)) %>%dplyr::select(location),
-     E2, xlab="Location", ylab="Residuals")
+     E4, xlab="Location", ylab="Residuals")
 plot(filter(sm, !is.na(N.P)) %>%dplyr::select(impact),
-     E2, xlab="Location", ylab="Residuals")
+     E4, xlab="Location", ylab="Residuals")
 
-qqnorm(residuals(M2))
-qqline(residuals(M2))
-ad.test(residuals(M2))
+qqnorm(residuals(M4))
+qqline(residuals(M4))
+ad.test(residuals(M4))
 
 x<-sm$N.P[!is.na(sm$N.P)]#removes na values from column
-E2<-residuals(M2,type="normalized")
-plot(M2) #residuals vs fitted values
-plot(x, E2)
+E4<-residuals(M4,type="normalized")
+plot(M4) #residuals vs fitted values
+plot(x, E4)
 
 #try alternate variance structures
 vf1=varIdent(form=~1|impact)
@@ -71,78 +89,68 @@ vf9=varExp(form=~fitted(.)|f.time)
 vf10=varConstPower(form=~ fitted(.)|impact)
 vf11=varConstPower(form=~ fitted(.)|f.time)
 
-M2.0<-lme(N.P ~ impact+f.time, random=~1|nest, 
-        na.action=na.omit, data=sm)
+M4<-lme(N.P ~ impact*f.time, random=~1|nest, 
+        na.action=na.omit, data=sm, method="ML")
 
-M2.1<-lme(N.P ~ impact+f.time, random=~1|nest, 
+M4.1<-lme(N.P ~ impact*f.time, random=~1|nest, 
         na.action=na.omit, data=sm, weights=vf1)
 
-M2.2<-lme(N.P ~ impact+f.time, random=~1|nest, 
+M4.2<-lme(N.P ~ impact*f.time, random=~1|nest, 
         na.action=na.omit, data=sm, weights=vf2)
 
-M2.3<-lme(N.P ~ impact+f.time, random=~1|nest, 
+M4.3<-lme(N.P ~ impact*f.time, random=~1|nest, 
         na.action=na.omit, data=sm, weights=vf3)
-#No Convergence
 
-M2.4<-lme(N.P ~ impact+f.time, random=~1|nest, 
+M4.4<-lme(N.P ~ impact*f.time, random=~1|nest, 
         na.action=na.omit, data=sm, weights=vf4)
-#No Convergence
 
-M2.5<-lme(N.P ~ impact+f.time, random=~1|nest, 
+M4.5<-lme(N.P ~ impact*f.time, random=~1|nest, 
         na.action=na.omit, data=sm, weights=vf5)
-#No Convergence
 
-M2.6<-lme(N.P ~ impact+f.time, random=~1|nest, 
+M4.6<-lme(N.P ~ impact*f.time, random=~1|nest, 
         na.action=na.omit, data=sm, weights=vf6)
-#No Convergence
 
-M2.7<-lme(N.P ~ impact+f.time, random=~1|nest, 
+M4.7<-lme(N.P ~ impact*f.time, random=~1|nest, 
         na.action=na.omit, data=sm, weights=vf7)
-#No Convergence
 
-M2.8<-lme(N.P ~ impact+f.time, random=~1|nest, 
+M4.8<-lme(N.P ~ impact*f.time, random=~1|nest, 
         na.action=na.omit, data=sm, weights=vf8)
-#No Convergence
 
-M2.9<-lme(N.P ~ impact+f.time, random=~1|nest, 
+M4.9<-lme(N.P ~ impact*f.time, random=~1|nest, 
         na.action=na.omit, data=sm, weights=vf9)
-#No Convergence
 
-M2.10<-lme(N.P ~ impact+f.time, random=~1|nest, 
+M4.10<-lme(N.P ~ impact*f.time, random=~1|nest, 
         na.action=na.omit, data=sm, weights=vf10)
-#No Convergence
 
-M2.11<-lme(N.P ~ impact+f.time, random=~1|nest, 
+M4.11<-lme(N.P ~ impact*f.time, random=~1|nest, 
         na.action=na.omit, data=sm, weights=vf11)
-#No Convergence
 
-anova(M2.0, M2.1, M2.2)
-#M0.7 is best with varIdent as a function of time
+anova(M4.1, M4.2, M4.9)
 
-E2.2<-residuals(M2.2)
+E4.9<-residuals(M4.9)
 
 plot(filter(sm, !is.na(N.P)) %>%dplyr::select(location),
-     E2.2, xlab="Location", ylab="Residuals")
+     E4.9, xlab="Location", ylab="Residuals")
 plot(filter(sm, !is.na(N.P)) %>%dplyr::select(impact),
-     E2.2, xlab="Location", ylab="Residuals")
+     E4.9, xlab="Location", ylab="Residuals")
 
-qqnorm(residuals(M2.2))
-qqline(residuals(M2.2))
-ad.test(residuals(M2.2))
+qqnorm(residuals(M4.9))
+qqline(residuals(M4.9))
+ad.test(residuals(M4.9))
 
 x<-sm$N.P[!is.na(sm$N.P)]#removes na values from column
-E2.2<-residuals(M2.2,type="normalized")
-plot(M2.2) #residuals vs fitted values
-plot(x, E2.2)
+E4.9<-residuals(M4.9,type="normalized")
+plot(M4.9) #residuals vs fitted values
+plot(x, E4.9)
 
-summary(M2.2)
+summary(M4.9)
 
 #Auto Correlation Plot
-E2.2<-residuals(M2.2)
+E4.9<-residuals(M4.9)
 x<-!is.na(sm$N.P)
 Efull<-vector(length=length(sm$N.P))
 Efull<-NA
-Efull[x]<-E2.2
+Efull[x]<-E4.9
 acf(Efull, na.action=na.pass,
     main="Auto-correlation plot for residuals")
 
@@ -192,6 +200,181 @@ ggplot(x, aes(x=cat.time, y=N.P.mean)) +
 ggsave('np.tiff',
        units="in",
        width=5,
+       height=4.5,
+       dpi=1200,
+       compression="lzw")
+
+######################### Violation of Indpendence ###################################
+
+#Dealing with Temporal Correlation
+
+M3<-gls(N.P ~ impact+f.time, 
+        na.action=na.omit, data=sm, correlation=corCompSymm(form=~f.time))
+
+M4.9<-lme(N.P ~ impact*f.time, random=~1|nest, 
+          na.action=na.omit, data=sm, weights=vf9)
+
+M4.12<-lme(N.P ~ impact*f.time,random=~1|nest, 
+           na.action=na.omit, data=sm, weights=vf9, correlation=corCompSymm(form=~f.time))
+
+M4.13<-lme(N.P ~ impact*f.time, random=~1|nest, 
+           na.action=na.omit, data=sm, correlation=corCompSymm(form=~f.time))
+
+
+cs1<-corARMA(c(0.2), p=1, q=0)
+cs2<-corARMA(c(0.3, -0.3), p=2, q=0)
+
+M4.14<-lme(N.P ~ impact*f.time, random=~1|nest, 
+           na.action=na.omit, data=sm, weights=vf9, correlation=cs1)
+
+M4.15<-lme(P ~ impact*f.time, random=~1|nest, 
+           na.action=na.omit, data=sm, weights=vf9, correlation=cs2)
+
+#M4.12 and 4.15 go to convergence
+anova(M4.9 ,M4.12, M4.13, M4.14)
+
+#M4.9 is still lower in AIC
+#Look at M4.14
+E4.14<-residuals(M4.14)
+
+plot(filter(sm, !is.na(N.P)) %>%dplyr::select(location),
+     E4.14, xlab="Location", ylab="Residuals")
+plot(filter(sm, !is.na(N.P)) %>%dplyr::select(impact),
+     E4.14, xlab="Location", ylab="Residuals")
+
+qqnorm(residuals(M4.14))
+qqline(residuals(M4.14))
+ad.test(residuals(M4.14))
+
+anova(M4.6,M4.14)
+#4.6 is best model
+
+E3<-residuals(M3)
+
+plot(filter(sm, !is.na(N.P)) %>%dplyr::select(location),
+     E3, xlab="Location", ylab="Residuals")
+plot(filter(sm, !is.na(N.P)) %>%dplyr::select(impact),
+     E3, xlab="Location", ylab="Residuals")
+
+qqnorm(residuals(M3))
+qqline(residuals(M3))
+ad.test(residuals(M3))
+
+######################################Try log normalized data###############################################
+
+sm$log.N.P<-log10(sm$N.P)
+
+M1<-lme(log.N.P ~ impact+f.time, 
+        random=~ 1 | location, na.action=na.omit, data=sm, method="ML")
+
+#try nesting
+
+M2<-lme(log.N.P ~ impact+f.time, random=~1|nest, 
+        na.action=na.omit, data=sm, method="ML")
+
+#try interaction with random factor
+
+M3<-lme(log.N.P ~ impact*f.time, 
+        random=~ 1 | location, na.action=na.omit, data=sm, method="ML")
+
+M4<-lme(log.N.P ~ impact*f.time, random=~1|nest, 
+        na.action=na.omit, data=sm, method="ML")
+
+anova(M1,M2,M3,M4)
+
+#M2 is better
+
+M2<-lme(log.N.P ~ impact+f.time, random=~1|nest, 
+        na.action=na.omit, data=sm, method="ML")
+AIC(M2)
+
+E2<-residuals(M2)
+
+plot(filter(sm, !is.na(log.N.P)) %>%dplyr::select(location),
+     E2, xlab="Location", ylab="Residuals")
+plot(filter(sm, !is.na(log.N.P)) %>%dplyr::select(impact),
+     E2, xlab="Location", ylab="Residuals")
+
+qqnorm(residuals(M2))
+qqline(residuals(M2))
+ad.test(residuals(M2))
+
+#Log normal works!
+
+#####################################################
+#Get Full Model Statistics and Make Graph
+#####################################################
+#final model
+M.full<-lme(log.N.P ~ impact+f.time, random=~1|nest, 
+            na.action=na.omit, data=sm, method="ML")
+
+anova(M.full)
+
+#this extracts what you need to look at pairwise differences and make a graphic
+M.full.em = emmeans(M.full, ~ f.time | impact)
+
+#this shows each pairwise difference (high v. low budworm at each sample event
+pairs(M.full.em)
+
+#the next several lines are building a table you can use in ggplot
+xx = as.data.frame(summary(M.full.em))[c('emmean', 'SE')]
+
+impact = rep((letters[seq(from = 1, to = 2)]), 8)
+impact<-recode(impact, "a" ="High")
+impact<-recode(impact, "b" ="Low")
+event = c(1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8)
+
+log.N.P.emm = data.frame(cbind(xx,impact,event))
+log.N.P.emm$emmean.raw = (10^(log.N.P.emm$emmean))
+log.N.P.emm$SE.raw = (10^(log.N.P.emm$emmean))
+#etc.  that will change your plot below since the error bars will be going in the other direction
+
+
+
+#this is the final table you can use for plotting
+log.N.P.emm
+
+x = log.N.P.emm
+
+#make a new vector with the categorical times.  you'll need to adjust this 
+#for your soil graphics
+cat.time<-c("11Sep15", "11Sep15", "11Oct15", "11Oct15", "8Nov15", "8Nov15", "8May16", "8May16", "13Jun16", "13Jun16", "4Aug16", "4Aug16", "19Sep16", "19Sep16", "6Nov16", "6Nov16")
+#force the new vector to be characters
+x$cat.time<-as.character(cat.time)
+#force the new vector to be ordered in the order you gave it instead of alphabetical
+x$cat.time<-factor(x$cat.time, levels=unique(x$cat.time))
+
+pd=position_dodge(0.1)
+
+ggplot(data=x, 
+       aes(x=cat.time, y=emmean.raw, fill=impact)) + 
+  geom_bar(stat="identity", position=position_dodge(), color = "black") + 
+  geom_errorbar(aes(ymin=emmean.raw, ymax=emmean.raw+SE.raw), width=0.2, 
+                position=position_dodge(0.9)) + 
+  scale_fill_manual(values=c("black","white")) +
+  xlab("Sample Event") +
+  ylab("Nitrogen to Phosphorous Ratio") +
+  labs(fill="Budworm Activity") +
+  theme_bw() +
+  geom_hline(yintercept=0)+
+  theme(panel.grid.major=element_blank(),
+        panel.grid.minor=element_blank(),
+        legend.title=element_text(size=8),
+        legend.key=element_blank(),
+        legend.position=c(0.5,0.98),
+        legend.text=element_text(size=8),
+        legend.background=element_blank(),
+        legend.direction="horizontal",
+        legend.key.size=unit(0.3, "cm"),
+        axis.title.y=element_text(size=8),
+        axis.title.x=element_text(size=8),
+        axis.text.x=element_text(size=8))
+
+
+#this will save the file
+ggsave('figures/emmnetdinTFflux.tiff',
+       units="in",
+       width=5.5,
        height=4.5,
        dpi=1200,
        compression="lzw")
