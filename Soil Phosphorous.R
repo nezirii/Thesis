@@ -487,7 +487,7 @@ M.full<-lme(log.P.5th ~ impact+f.time,
 anova(M.full)
 
 #this extracts what you need to look at pairwise differences and make a graphic
-M.full.em = emmeans(M.full, ~ f.time | impact)
+M.full.em = emmeans(M.full, ~ impact | f.time)
 
 #this shows each pairwise difference (high v. low budworm at each sample event
 pairs(M.full.em)
@@ -556,3 +556,5 @@ ggsave('figures/emmnetdinTFflux.tiff',
        height=4.5,
        dpi=1200,
        compression="lzw")
+
+Hi Clay
