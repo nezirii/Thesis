@@ -8,6 +8,7 @@ sm$f.time<-factor(sm$time)
 sm$f.plot<-factor(sm$plot)
 sm$nest <- with(sm, factor(paste(location,f.plot)))
 
+sm$ug.P<-1000*(sm$P)
 
 #install packages
 
@@ -261,7 +262,7 @@ ad.test(residuals(M3))
 
 ######################################Try log normalized data###############################################
 
-sm$log.P<-log10(sm$P)
+sm$log.ug.P<-log10(sm$ug.P)
 
 M1<-lme(log.P ~ impact+f.time, 
         random=~ 1 | location, na.action=na.omit, data=sm, method="ML")
@@ -345,8 +346,8 @@ ad.test(residuals(M2.11))
 
 ############################try log of 5th root####################################
 
-sm$P.5th<-(sm$P)^(1/5)
-sm$log.P.5th<-log10(sm$P.5th)
+sm$ug.P.5th<-(sm$ug.P)^(1/5)
+sm$ug.log.P.5th<-log10(sm$ug.P.5th)
 #CPA - there was a typo that named this lower case p instead of upper case P as written in code below
 
 M1<-lme(log.P.5th ~ impact+f.time, 
@@ -481,8 +482,8 @@ ad.test(residuals(M1.6))
 #Get Full Model Statistics and Make Graph
 #####################################################
 #final model
-M.full<-lme(log.P.5th ~ impact+f.time, 
-            random=~ 1 | location, na.action=na.omit, data=sm, weights=vf11)
+M.full<-lme(log.ug.P.5th ~ impact+f.time, 
+            random=~ 1 | location, na.action=na.omit, data=sm, weights=vf6)
 
 anova(M.full)
 
@@ -500,9 +501,9 @@ impact<-recode(impact, "a" ="High")
 impact<-recode(impact, "b" ="Low")
 event = c(1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8)
 
-log.P.5th.emm = data.frame(cbind(xx,impact,event))
-log.P.5th.emm$emmean.raw = (10^(log.P.5th.emm$emmean))^5
-log.P.5th.emm$SE.raw = (10^(log.P.5th.emm$emmean))^5
+log.ug.P.5th.emm = data.frame(cbind(xx,impact,event))
+log.ug.P.5th.emm$emmean.raw = (10^(log.ug.P.5th.emm$emmean))^5
+log.ug.P.5th.emm$SE.raw = (10^(log.ug.P.5th.emm$SE))^5
 #CPA - those are grouped wrong.  should be
 #log.P.5th.emm$emmean.raw = (10^(log.P.5th.emm$emmean))^5
 #etc.  that will change your plot below since the error bars will be going in the other direction
@@ -510,9 +511,9 @@ log.P.5th.emm$SE.raw = (10^(log.P.5th.emm$emmean))^5
 
 
 #this is the final table you can use for plotting
-log.P.5th.emm
+log.ug.P.5th.emm
 
-x = log.P.5th.emm
+x = log.ug.P.5th.emm
 
 #make a new vector with the categorical times.  you'll need to adjust this 
 #for your soil graphics
@@ -531,7 +532,7 @@ ggplot(data=x,
                 position=position_dodge(0.9)) + 
   scale_fill_manual(values=c("black","white")) +
   xlab("Sample Event") +
-  ylab(expression(Soil~Phosphate~(mg~PO[4]~g^{-1}~soil))) +
+  ylab(expression(Soil~Phosphorous~(mg~PO[4]~g^{-1}~soil))) +
   labs(fill="Budworm Activity") +
   theme_bw() +
   geom_hline(yintercept=0)+
@@ -549,12 +550,12 @@ ggplot(data=x,
         axis.text.x=element_text(size=8))
 
 
+#Soil Phorphorous mgPO4 3- Dash P
 #this will save the file
-ggsave('figures/emmnetdinTFflux.tiff',
+ggsave('figures/emmnetsrp.tiff',
        units="in",
        width=5.5,
        height=4.5,
        dpi=1200,
        compression="lzw")
 
-Hi Clay

@@ -2,7 +2,7 @@
 
 sm<-read.table(file="soil.data.3.csv", header=T, sep=",")
 
-sm$ng.NO3<-1000000*(sm$NO3)
+sm$ng.NO3<-1000*(sm$NO3)
 
 #set factors
 str(sm)
@@ -519,7 +519,7 @@ ggplot(data=x,
         panel.grid.minor=element_blank(),
         legend.title=element_text(size=8),
         legend.key=element_blank(),
-        legend.position=c(0.5,0.98),
+        legend.position=c(0.12,0.98),
         legend.text=element_text(size=8),
         legend.background=element_blank(),
         legend.direction="horizontal",
@@ -530,7 +530,7 @@ ggplot(data=x,
 
 
 #this will save the file
-ggsave('figures/emmnetdinTFflux.tiff',
+ggsave('figures/emmno3.tiff',
        units="in",
        width=5.5,
        height=4.5,
