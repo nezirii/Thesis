@@ -2,6 +2,8 @@
 
 sm<-read.table(file="soil.data.3.csv", header=T, sep=",")
 
+sm$ng.NO3<-1000000*(sm$NO3)
+
 #set factors
 str(sm)
 sm$f.time<-factor(sm$time)
@@ -244,7 +246,7 @@ anova(M1.11, M1.13, M1.14)
 
 ######################################Try log normalized data###############################################
 
-sm$log.NO3<-log10(sm$NO3)
+sm$log.ng.NO3<-log10(sm$ng.NO3)
 
 M1<-lme(log.NO3 ~ impact+f.time, 
         random=~ 1 | location, na.action=na.omit, data=sm, method="ML")
@@ -319,17 +321,16 @@ anova(M3.1,M3.2,M3.3,M3.4,M3.5,M3.6,M3.7,M3.8,M3.9,M3.10,M3.11)
 #Look at 1, 4, 5, 6, 10, 11
 
 
-E3.11<-residuals(M3.11)
+E3.9<-residuals(M3.9)
 
-qqnorm(residuals(M3.11))
-qqline(residuals(M3.11))
-ad.test(residuals(M3.11))
+qqnorm(residuals(M3.9))
+qqline(residuals(M3.9))
+ad.test(residuals(M3.9))
 
 ############################try log of 5th root####################################
 
-sm$NO3.5th<-(sm$NO3)^(1/5)
-sm$log.NO3.5th<-log10(sm$NO3.5th)
-#CPA - there was a typo that named this lower case p instead of upper case P as written in code below
+sm$ng.NO3.5th<-(sm$ng.NO3)^(1/5)
+sm$log.ng.NO3.5th<-log10(sm$ng.NO3.5th)
 
 M1<-lme(log.NO3.5th ~ impact+f.time, 
         random=~ 1 | location, na.action=na.omit, data=sm, method="ML")
@@ -448,7 +449,7 @@ M1.11<-lme(log.NO3.5th ~ impact+f.time,
 anova(M1.1,M1.2,M1.3,M1.4,M1.5,M1.6,M1.7,M1.8,M1.9,M1.10,M1.11)
 
 
-E1.6<-residuals(M1.9)
+E1.9<-residuals(M1.9)
 
 qqnorm(residuals(M1.9))
 qqline(residuals(M1.9))
@@ -461,8 +462,8 @@ ad.test(residuals(M1.9))
 #Get Full Model Statistics and Make Graph
 #####################################################
 #final model
-M.full<-lme(log.NO3.5th ~ impact*f.time, 
-            random=~ 1 | location, na.action=na.omit, data=sm,)
+M.full<-lme(log.ng.NO3.5th ~ impact*f.time, 
+            random=~ 1 | location, na.action=na.omit, data=sm)
 
 anova(M.full)
 
@@ -480,18 +481,18 @@ impact<-recode(impact, "a" ="High")
 impact<-recode(impact, "b" ="Low")
 event = c(1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8)
 
-log.NO3.5th.emm = data.frame(cbind(xx,impact,event))
-log.NO3.5th.emm$emmean.raw = (10^(log.NO3.5th.emm$emmean))^5
-log.NO3.5th.emm$SE.raw = (10^(log.NO3.5th.emm$emmean))^5
+log.ng.NO3.5th.emm = data.frame(cbind(xx,impact,event))
+log.ng.NO3.5th.emm$emmean.raw = (10^(log.ng.NO3.5th.emm$emmean))^5
+log.ng.NO3.5th.emm$SE.raw = (10^(log.ng.NO3.5th.emm$SE))^5
 #log.NO3.5th.emm$emmean.raw = (10^(log.NO3.5th.emm$emmean))^5
 #etc.  that will change your plot below since the error bars will be going in the other direction
 
 
 
 #this is the final table you can use for plotting
-log.NO3.5th.emm
+log.ng.NO3.5th.emm
 
-x = log.NO3.5th.emm
+x = log.ng.NO3.5th.emm
 
 #make a new vector with the categorical times.  you'll need to adjust this 
 #for your soil graphics
