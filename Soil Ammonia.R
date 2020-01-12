@@ -242,6 +242,8 @@ ad.test(residuals(M1.15))
 
 #Log Normalized data
 
+sm$log.NH4<-log10(sm$NH4)
+
 #start without random factor
 M0<-gls(log.NH4 ~ impact+f.time, 
         na.action=na.omit, data=sm, method="ML")
