@@ -40,10 +40,20 @@ M0<-gls(NH4 ~ impact+f.time,
 M1<-lme(NH4 ~ impact+f.time, 
         random=~ 1 | location, na.action=na.omit, data=sm, method="ML")
 
+#try nesting
+
 M2<-lme(NH4 ~ impact+f.time, random=~1|nest, 
         na.action=na.omit, data=sm, method="ML")
 
-anova(M1,M2)
+#try interaction with random factor
+
+M3<-lme(NH4 ~ impact*f.time, 
+        random=~ 1 | location, na.action=na.omit, data=sm, method="ML")
+
+M4<-lme(NH4 ~ impact*f.time, random=~1|nest, 
+        na.action=na.omit, data=sm, method="ML")
+
+anova(M1,M2,M3,M4)
 
 #M1 looks the best with no nesting and no random effect
 
@@ -254,7 +264,13 @@ M1<-lme(log.NH4 ~ impact+f.time,
 M2<-lme(log.NH4 ~ impact+f.time, random=~1|nest, 
         na.action=na.omit, data=sm, method="ML")
 
-anova(M1,M2)
+M3<-lme(log.NH4 ~ impact*f.time, 
+        random=~ 1 | location, na.action=na.omit, data=sm, method="ML")
+
+M4<-lme(log.NH4 ~ impact*f.time, random=~1|nest, 
+        na.action=na.omit, data=sm, method="ML")
+
+anova(M0,M1,M2,M3,M4)
 
 #M1 looks the best with no nesting and no random effect
 
@@ -266,8 +282,6 @@ plot(filter(sm, !is.na(log.NH4)) %>%dplyr::select(location),
      E1, xlab="Location", ylab="Residuals")
 plot(filter(sm, !is.na(log.NH4)) %>%dplyr::select(impact),
      E1, xlab="Location", ylab="Residuals")
-
-E1.8<-residuals(M1.8)
 
 x<-sm$log.NH4[!is.na(sm$log.NH4)]#removes na values from column
 E1<-residuals(M1,type="normalized")
@@ -315,25 +329,25 @@ M1.11<-gls(log.NH4 ~ impact+f.time,
 
 anova(M1.1,M1.2,M1.3,M1.4,M1.5,M1.6,M1.7,M1.8,M1.9,M1.10,M1.11)
 #Try M1.3,M1.4,M1.6,M1.7,M1.8,M1.10,M1.9
-#M1.8 works best
+#M1.9 works best
 
-E1.8<-residuals(M1.8)
+E1.9<-residuals(M1.9)
 
 plot(filter(sm, !is.na(log.NH4)) %>%dplyr::select(location),
-     E1.8, xlab="Location", ylab="Residuals")
+     E1.9, xlab="Location", ylab="Residuals")
 plot(filter(sm, !is.na(log.NH4)) %>%dplyr::select(impact),
-     E1.8, xlab="Location", ylab="Residuals")
+     E1.9, xlab="Location", ylab="Residuals")
 
-qqnorm(residuals(M1.8))
-qqline(residuals(M1.8))
-ad.test(residuals(M1.8))
+qqnorm(residuals(M1.9))
+qqline(residuals(M1.9))
+ad.test(residuals(M1.9))
 
 x<-sm$log.NH4[!is.na(sm$log.NH4)]#removes na values from column
-E1.8<-residuals(M1.8,type="normalized")
-plot(M1.8) #residuals vs fitted values
-plot(x, E1.8)
+E1.9<-residuals(M1.9,type="normalized")
+plot(M1.9) #residuals vs fitted values
+plot(x, E1.9)
 
-summary(M1.8)
+summary(M1.9)
 
 #Normalized with Different base model
 
@@ -386,7 +400,7 @@ E1.1<-residuals(M1.1,type="normalized")
 plot(M1.1) #residuals vs fitted values
 plot(x, E1.1)
 
-#1.1 Works but its not quite as good as M1.8 using the base model without the random factor
+#1.1 lme works
 
 #####################################################
 #Get Full Model Statistics and Make Graph
@@ -456,7 +470,7 @@ ggplot(data=x,
 
 
 #this will save the file
-ggsave('figures/emmnetdinTFflux.tiff',
+ggsave('figures/emmNH4.tiff',
        units="in",
        width=5.5,
        height=4.5,
