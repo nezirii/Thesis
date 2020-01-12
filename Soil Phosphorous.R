@@ -10,6 +10,7 @@ sm$nest <- with(sm, factor(paste(location,f.plot)))
 
 sm$ug.P<-1000*(sm$P)
 
+
 #install packages
 
 install.packages("nlme")
