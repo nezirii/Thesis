@@ -43,12 +43,6 @@ impact<-recode(impact, "b" ="Low")
 event = c(1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9)
 
 log.srp.emm = data.frame(cbind(xx,impact,event))
-log.srp.emm$emmean.raw = (10^(log.srp.emm$emmean))^5
-log.srp.emm$SE.raw = (10^(log.srp.emm$SE))^5
-#CPA - those are grouped wrong.  should be
-#etc.  that will change your plot below since the error bars will be going in the other direction
-
-
 
 #this is the final table you can use for plotting
 log.srp.emm
@@ -56,7 +50,7 @@ log.srp.emm
 x = log.srp.emm
 
 xx <- group_by(x, event) %>%  # Grouping function causes subsequent functions to aggregate by season and reach
-  summarize(srp.mean = mean(emmean.raw, na.rm = TRUE)) # na.rm = TRUE to remove missing values
+  summarize(srp.mean = mean(emmean, na.rm = TRUE)) # na.rm = TRUE to remove missing values
 
 sort(xx$srp.mean, index.return=T) #Shows sample event lowest to highest
 

@@ -406,7 +406,7 @@ xx = as.data.frame(summary(M.full.em))[c('emmean', 'SE')]
 impact = rep((letters[seq(from = 1, to = 2)]), 10)
 impact<-recode(impact, "a" ="High")
 impact<-recode(impact, "b" ="Low")
-event = c(1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10)
+event = c(1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10)#missing time 3 like with ammonium, so same problem here.
 
 log.srp.emm = data.frame(cbind(xx,impact,event))
 log.srp.emm$emmean.raw = (10^(log.srp.emm$emmean))^5

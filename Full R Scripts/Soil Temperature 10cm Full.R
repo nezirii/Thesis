@@ -351,7 +351,6 @@ ad.test(residuals(M4.10))
 
 st$a.temp.10cm.5th<-(st$a.temp.10cm)^(1/5)
 st$log.a.temp.10cm.5th<-log10(st$a.temp.10cm.5th)
-#CPA - there was a typo that named this lower case p instead of upper case P as written in code below
 
 M1<-lme(log.a.temp.10cm.5th ~ impact+f.time, 
         random=~ 1 | location, na.action=na.omit, data=st, method="ML")
@@ -533,7 +532,7 @@ ggplot(data=x,
                 position=position_dodge(0.9)) + 
   scale_fill_manual(values=c("black","white")) +
   xlab("Sample Event") +
-  ylab(expression(Soil~Temperature~(C))) +
+  ylab(expression(Soil~Temperature~at~10~cm~(C))) +
   labs(fill="Budworm Activity") +
   theme_bw() +
   geom_hline(yintercept=0)+
@@ -552,7 +551,7 @@ ggplot(data=x,
 
 
 #this will save the file
-ggsave('figures/emmtempa.tiff',
+ggsave('figures/emm temp 10 cm.tiff',
        units="in",
        width=5.5,
        height=4.5,

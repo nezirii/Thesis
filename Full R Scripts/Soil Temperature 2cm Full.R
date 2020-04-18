@@ -228,40 +228,6 @@ M4.13<-lme(o.temp.2cm~ impact*f.time, random=~1|nest,
            na.action=na.omit, data=st, correlation=corCompSymm(form=~f.time))
 
 
-cs1<-corARMA(c(0.2), p=1, q=0)
-cs2<-corARMA(c(0.3, -0.3), p=2, q=0)
-
-M4.14<-lme(o.temp.2cm~ impact*f.time, random=~1|nest, 
-           na.action=na.omit, data=st, weights=vf9, correlation=cs1)
-
-M4.15<-lme(o.temp.2cm~ impact*f.time, random=~1|nest, 
-           na.action=na.omit, data=st, weights=vf9, correlation=cs2)
-
-anova(M4.9,M4.13,M4.14,M4.15)
-C
-#Look at M4.15
-E4.15<-residuals(M4.15)
-
-plot(filter(st, !is.na(o.temp.2cm)) %>%dplyr::select(location),
-     E4.15, xlab="Location", ylab="Residuals")
-plot(filter(st, !is.na(o.temp.2cm)) %>%dplyr::select(impact),
-     E4.15, xlab="Location", ylab="Residuals")
-
-qqnorm(residuals(M4.15))
-qqline(residuals(M4.15))
-ad.test(residuals(M4.15))
-
-E3<-residuals(M3)
-
-plot(filter(st, !is.na(o.temp.2cm)) %>%dplyr::select(location),
-     E3, xlab="Location", ylab="Residuals")
-plot(filter(st, !is.na(o.temp.2cm)) %>%dplyr::select(impact),
-     E3, xlab="Location", ylab="Residuals")
-
-qqnorm(residuals(M3))
-qqline(residuals(M3))
-ad.test(residuals(M3))
-
 ######################################Try log normalized data###############################################
 
 st$log.o.temp.2cm<-log10(st$o.temp.2cm)
@@ -483,7 +449,7 @@ ad.test(residuals(M1.10))
 #Get Full Model Statistics and Make Graph
 #####################################################
 #final model
-M.full<-lme(o.temp.2cm~ impact*f.time, random=~1|nest, 
+M.full<-lme(log.o.temp.2cm.5th~ impact*f.time, random=~1|nest, 
             na.action=na.omit, data=st)
 
 anova(M.full)

@@ -1,5 +1,3 @@
-#this is clay
-#I havent had my coffee...
 #load data
 
 decomp=read.table(file="decomp.rates.2.5.csv", header=T, sep=",")
@@ -144,4 +142,3 @@ ggsave('decomp by leaf.tiff',
        dpi=1200,
        compression="lzw")
 
-anova(M1)

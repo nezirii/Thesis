@@ -18,12 +18,12 @@ tf$f.time<-factor(tf$time)
 tf$f.plot<-factor(tf$plot)
 tf$nest <- with(tf, factor(paste(location,f.plot)))
 
-tf$log.srp<-log10(tf$srp)
-tf$srp.5th<-(tf$srp)^(1/5)
-tf$log.srp.5th<-log10(tf$srp.5th)
+tf$ug.no3.no2<-1000*(tf$no3.no2)
+
+tf$log.ug.no3.no2<-log10(tf$ug.no3.no2)
 
 #final model
-M.full<-lme(log.srp ~ impact*f.time, random=~1|nest, 
+M.full<-lme(log.ug.no3.no2 ~ impact*f.time, random=~1|nest, 
             na.action=na.omit, data=tf)
 
 anova(M.full)
@@ -34,35 +34,35 @@ M.full.em = emmeans(M.full, ~ f.time | impact)
 #this shows each pairwise difference (high v. low budworm at each sample event
 pairs(M.full.em)
 
-#the next several lines are builsrpg a table you can use in ggplot
+#the next several lines are builno3.no2g a table you can use in ggplot
 xx = as.data.frame(summary(M.full.em))[c('emmean', 'SE')]
 
-impact = rep((letters[seq(from = 1, to = 2)]), 9)
+impact = rep((letters[seq(from = 1, to = 2)]), 8)#you only have 8 times contrasted...aren't there 10 sample periods?  For the same reason as ammonium, this line and subsequent lines won't work since your trying to make it out of 10 times instead of 8.  but it should be 10 in teh original data
 impact<-recode(impact, "a" ="High")
 impact<-recode(impact, "b" ="Low")
-event = c(1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9)
+event = c(1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8)
 
-log.srp.emm = data.frame(cbind(xx,impact,event))
-log.srp.emm$emmean.raw = (10^(log.srp.emm$emmean))^5
-log.srp.emm$SE.raw = (10^(log.srp.emm$SE))^5
+log.ug.no3.no2.emm = data.frame(cbind(xx,impact,event))
+log.ug.no3.no2.emm$emmean.raw = 10^(log.ug.no3.no2.emm$emmean)
+log.ug.no3.no2.emm$SE.raw = 10^(log.ug.no3.no2.emm$SE)
 #CPA - those are grouped wrong.  should be
 #etc.  that will change your plot below since the error bars will be going in the other direction
 
 
 
 #this is the final table you can use for plotting
-log.srp.emm
+log.ug.no3.no2.emm
 
-x = log.srp.emm
+x = log.ug.no3.no2.emm
 
 xx <- group_by(x, event) %>%  # Grouping function causes subsequent functions to aggregate by season and reach
-  summarize(srp.mean = mean(emmean.raw, na.rm = TRUE)) # na.rm = TRUE to remove missing values
+  summarize(NO3.mean = mean(emmean.raw, na.rm = TRUE)) # na.rm = TRUE to remove missing values
 
-sort(xx$srp.mean, index.return=T) #Shows sample event lowest to highest
+sort(xx$NO3.mean, index.return=T) #Shows sample event lowest to highest
 
 #make a new vector with the categorical times.  you'll need to adjust this 
 #for your soil graphics
-cat.time<-c("11Sep15", "11Sep15", "11Oct15", "11Oct15", "8Nov15", "8Nov15", "8May16", "8May16", "4Jun16", "4Jun16", "21Jun16", "21Jun16", "13Jul16", "13Jul16", "21Jul16", "21Jul16", "9Sep16", "9Sep16")
+cat.time<-c("11Sep15", "11Sep15", "11Oct15", "11Oct15","29Oct15", "29Oct15", "8Nov15", "8Nov15", "8May16", "8May16", "4Jun16", "4Jun16", "21Jun16", "21Jun16", "13Jul16", "13Jul16")
 #force the new vector to be characters
 x$cat.time<-as.character(cat.time)
 #force the new vector to be ordered in the order you gave it instead of alphabetical
@@ -77,11 +77,21 @@ ggplot(data=x,
                 position=position_dodge(0.9)) + 
   scale_fill_manual(values=c("black","white")) +
   xlab("Sample Event") +
-  ylab(expression(Throughfall~srp~(ug~N~L^{-1}))) +
+  ylab(expression(Throughfall~no3.no2~(ug~N~L^{-1}))) +
   labs(fill="Budworm Activity") +
-  annotate("Text", x=2, y=150,label="Budworm Impact: P=0.2222", size=3) +
-  annotate("Text", x=2, y=146, label="Sample Event: P<0.0001", size=3) +
+  annotate("Text", x=2, y=150, label="Budworm Impact: P=0.1219", size=3) +
+  annotate("Text", x=2, y=144, label="Sample Event: P<0.0001", size=3) +
   theme_bw() +
+  annotate("Text", x=1, y=52, label="a", size=3) +
+  annotate("Text", x=1, y=48, label="b", size=3) +
+  annotate("Text", x=2, y=37, label="a", size=3) +
+  annotate("Text", x=3, y=37, label="a", size=3) +
+  annotate("Text", x=4, y=20, label="a", size=3) +
+  annotate("Text", x=5, y=155, label="a", size=3) +
+  annotate("Text", x=6, y=16.5, label="c", size=3) +
+  annotate("Text", x=7, y=37, label="a", size=3) +
+  annotate("Text", x=8, y=120, label="a", size=3) +
+  annotate("Text", x=8, y=116, label="b", size=3) +
   geom_hline(yintercept=0)+
   theme(panel.grid.major=element_blank(),
         panel.grid.minor=element_blank(),
@@ -97,7 +107,7 @@ ggplot(data=x,
         axis.text.x=element_text(size=8))
 
 #this will save the file
-ggsave('figures/emm srp.tiff',
+ggsave('figures/emm tf no3.no2.tiff',
        units="in",
        width=5.5,
        height=4.5,

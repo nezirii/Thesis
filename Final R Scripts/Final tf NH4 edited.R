@@ -18,47 +18,43 @@ tf$f.time<-factor(tf$time)
 tf$f.plot<-factor(tf$plot)
 tf$nest <- with(tf, factor(paste(location,f.plot)))
 
-tf$log.srp<-log10(tf$srp)
-tf$srp.5th<-(tf$srp)^(1/5)
-tf$log.srp.5th<-log10(tf$srp.5th)
+tf$ug.nh4<-1000*(tf$nh4)
+
+tf$log.ug.nh4<-log10(tf$ug.nh4)
+tf$nh4.5th<-(tf$nh4)^(1/5)
+tf$log.nh4.5th<-log10(tf$nh4.5th)
 
 #final model
-M.full<-lme(log.srp ~ impact*f.time, random=~1|nest, 
+M.full<-lme(log.ug.nh4 ~ impact*f.time, random=~1|nest, 
             na.action=na.omit, data=tf)
 
 anova(M.full)
 
 #this extracts what you need to look at pairwise differences and make a graphic
-M.full.em = emmeans(M.full, ~ f.time | impact)
+M.full.em = emmeans(M.full, ~ impact | f.time)
 
 #this shows each pairwise difference (high v. low budworm at each sample event
 pairs(M.full.em)
 
-#the next several lines are builsrpg a table you can use in ggplot
+#the next several lines are builnh4g a table you can use in ggplot
 xx = as.data.frame(summary(M.full.em))[c('emmean', 'SE')]
 
-impact = rep((letters[seq(from = 1, to = 2)]), 9)
+impact = rep((letters[seq(from = 1, to = 2)]), 9)#you only have 9 sample periods in your data because you are missing time = 3, so this line isn't working since it's trying to put in 10 values.  Nothing below it will work either.
 impact<-recode(impact, "a" ="High")
 impact<-recode(impact, "b" ="Low")
 event = c(1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9)
 
-log.srp.emm = data.frame(cbind(xx,impact,event))
-log.srp.emm$emmean.raw = (10^(log.srp.emm$emmean))^5
-log.srp.emm$SE.raw = (10^(log.srp.emm$SE))^5
-#CPA - those are grouped wrong.  should be
-#etc.  that will change your plot below since the error bars will be going in the other direction
-
-
+log.ug.nh4.emm = data.frame(cbind(xx,impact,event))
 
 #this is the final table you can use for plotting
-log.srp.emm
+log.ug.nh4.emm
 
-x = log.srp.emm
+x = log.ug.nh4.emm
 
 xx <- group_by(x, event) %>%  # Grouping function causes subsequent functions to aggregate by season and reach
-  summarize(srp.mean = mean(emmean.raw, na.rm = TRUE)) # na.rm = TRUE to remove missing values
+  summarize(NO3.mean = mean(emmean.raw, na.rm = TRUE)) # na.rm = TRUE to remove missing values
 
-sort(xx$srp.mean, index.return=T) #Shows sample event lowest to highest
+sort(xx$NO3.mean, index.return=T) #Shows sample event lowest to highest
 
 #make a new vector with the categorical times.  you'll need to adjust this 
 #for your soil graphics
@@ -77,10 +73,11 @@ ggplot(data=x,
                 position=position_dodge(0.9)) + 
   scale_fill_manual(values=c("black","white")) +
   xlab("Sample Event") +
-  ylab(expression(Throughfall~srp~(ug~N~L^{-1}))) +
+  ylab(expression(Throughfall~nh4~(ug~N~L^{-1}))) +
   labs(fill="Budworm Activity") +
-  annotate("Text", x=2, y=150,label="Budworm Impact: P=0.2222", size=3) +
-  annotate("Text", x=2, y=146, label="Sample Event: P<0.0001", size=3) +
+  annotate("Text", x=2, y=170, label="Budworm Impact: P=0.0115", size=3) +
+  annotate("Text", x=2, y=164, label="Sample Event: P<0.0001", size=3) +
+  annotate("Text", x=2, y=158, label="Interaction: P<0.0001", size=3) +
   theme_bw() +
   geom_hline(yintercept=0)+
   theme(panel.grid.major=element_blank(),
@@ -97,7 +94,7 @@ ggplot(data=x,
         axis.text.x=element_text(size=8))
 
 #this will save the file
-ggsave('figures/emm srp.tiff',
+ggsave('figures/emm tf nh4.tiff',
        units="in",
        width=5.5,
        height=4.5,

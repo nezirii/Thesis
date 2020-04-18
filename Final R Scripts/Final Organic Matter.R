@@ -2,16 +2,6 @@ sm<-read.table(file="soil.data.3.csv", header=T, sep=",")
 
 #install packages
 
-install.packages("nlme")
-install.packages("lme4")
-install.packages("lmerTest")
-install.packages("dplyr")
-install.packages("nortest")
-install.packages("ggplot2")
-install.packages("multcomp")
-install.packages("MuMIn")
-install.packages("emmeans")
-
 library(nlme)
 library(lme4)
 library(lmerTest)
@@ -31,6 +21,8 @@ sm$nest <- with(sm, factor(paste(location,f.plot)))
 sm$log.pct.om<-log10(sm$pct.om)
 sm$pct.om.5th<-(sm$pct.om)^(1/5)
 sm$log.pct.om.5th<-log10(sm$pct.om.5th)
+
+vf10=varConstPower(form=~ fitted(.)|impact)
 
 #final model
 M.full<-lme(log.pct.om.5th ~ impact+f.time, 
@@ -60,6 +52,11 @@ log.pct.om.5th.emm$SE.raw = (10^(log.pct.om.5th.emm$SE))^5
 log.pct.om.5th.emm
 
 x = log.pct.om.5th.emm
+
+xx <- group_by(x, event) %>%  # Grouping function causes subsequent functions to aggregate by season and reach
+  summarize(pct.om.mean = mean(emmean.raw, na.rm = TRUE)) # na.rm = TRUE to remove missing values
+
+sort(xx$pct.om.mean, index.return=T) #Shows sample event lowest to highest
 
 #make a new vector with the categorical times.  you'll need to adjust this 
 #for your soil graphics

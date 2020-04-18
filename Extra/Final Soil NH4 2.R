@@ -54,12 +54,16 @@ log.ug.NH4.emm
 
 x = log.ug.NH4.emm
 
-#sorted table for tukeys
+#create table x to interpret post hoc test
+x <- group_by(sm, f.time) %>%  # Grouping function causes subsequent functions to aggregate by season and reach
+  summarize(log.ug.NH4.emm = emm(log.ug.NH4, na.rm = TRUE), # na.rm = TRUE to remove missing values
+            log.ug.NH4.sd=sd(log.ug.NH4, na.rm = TRUE),  # na.rm = TRUE to remove missing values
+            n = sum(!is.na(log.ug.NH4)), # of observations, excluding NAs.
+            log.ug.NH4.se=log.ug.NH4.sd/sqrt(n))
 
-xx <- group_by(x, event) %>%  # Grouping function causes subsequent functions to aggregate by season and reach
-  summarize(NH4.mean = mean(emmean.raw, na.rm = TRUE)) # na.rm = TRUE to remove missing values
+sort(x$log.ug.NH4.emm, index.return=T)#this sorts time means in order, which makes it easier to do the groupings
 
-sort(xx$NH4.mean, index.return=T) #Shows sample event lowest to highest
+x
 
 #make a new vector with the categorical times.  you'll need to adjust this 
 #for your soil graphics
@@ -81,15 +85,30 @@ ggplot(data=x,
   ylab(expression(Soil~Ammonium~(ug~NH[4]~-N~g^{-1}~soil))) +
   labs(fill="Budworm Activity") +
   annotate("Text", x=1, y=5, label="a", size=3) +
-  annotate("Text", x=2, y=8.5, label="a", size=3) +
+  annotate("Text", x=3, y=11.5, label="a", size=3) +
+  annotate("Text", x=4, y=18, label="a", size=3) +
+  annotate("Text", x=5, y=6, label="a", size=3) +
+  annotate("Text", x=7, y=11, label="a", size=3) +
+  annotate("Text", x=8, y=16, label="a", size=3) +
   annotate("Text", x=2, y=8, label="b", size=3) +
-  annotate("Text", x=3, y=12, label="b", size=3) +
-  annotate("Text", x=3, y=11.5, label="c", size=3) +
-  annotate("Text", x=4, y=17.5, label="b", size=3) +
-  annotate("Text", x=5, y=4.5, label="c", size=3) +
-  annotate("Text", x=6, y=6, label="a", size=3) +
-  annotate("Text", x=7, y=8, label="c", size=3) +
-  annotate("Text", x=8, y=13.5, label="d", size=3) +
+  annotate("Text", x=5, y=5.5, label="b", size=3) +
+  annotate("Text", x=7, y=10.5, label="b", size=3) +
+  annotate("Text", x=8, y=15.5, label="b", size=3) +
+  annotate("Text", x=3, y=11, label="c", size=3) +
+  annotate("Text", x=7, y=10, label="c", size=3) +
+  annotate("Text", x=8, y=15, label="c", size=3) +
+  annotate("Text", x=4, y=17.5, label="d", size=3) +
+  annotate("Text", x=5, y=5, label="d", size=3) +
+  annotate("Text", x=7, y=9.5, label="d", size=3) +
+  annotate("Text", x=8, y=14.5, label="d", size=3) +
+  annotate("Text", x=5, y=4.5, label="e", size=3) +
+  annotate("Text", x=6, y=6, label="e", size=3) +
+  annotate("Text", x=7, y=9, label="e", size=3) +
+  annotate("Text", x=6, y=5.5, label="f", size=3) +
+  annotate("Text", x=7, y=8.5, label="f", size=3) +
+  annotate("Text", x=8, y=14, label="f", size=3) +
+  annotate("Text", x=7, y=8, label="g", size=3) +
+  annotate("Text", x=8, y=13.5, label="g", size=3) +
   annotate("Text", x=2, y=17.5, label="Budworm Impact: P=0.3326", size=3) +
   annotate("Text", x=2, y=17, label="Sample Event: P<0.0001", size=3) +
   theme_bw() +
@@ -107,8 +126,9 @@ ggplot(data=x,
         axis.title.x=element_text(size=8),
         axis.text.x=element_text(size=8))
 
+
 #this will save the file
-ggsave('figures/emm soil NH4.tiff',
+ggsave('figures/emm NH4.tiff',
        units="in",
        width=5.5,
        height=4.5,

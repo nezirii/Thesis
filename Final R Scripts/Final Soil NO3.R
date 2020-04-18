@@ -2,18 +2,6 @@
 
 sm<-read.table(file="soil.data.3.csv", header=T, sep=",")
 
-#install packages
-
-install.packages("nlme")
-install.packages("lme4")
-install.packages("lmerTest")
-install.packages("dplyr")
-install.packages("nortest")
-install.packages("ggplot2")
-install.packages("multcomp")
-install.packages("MuMIn")
-install.packages("emmeans")
-
 library(nlme)
 library(lme4)
 library(lmerTest)
@@ -69,6 +57,13 @@ log.ng.NO3.5th.emm
 
 x = log.ng.NO3.5th.emm
 
+#sorted table for tukeys
+
+xx <- group_by(x, event) %>%  # Grouping function causes subsequent functions to aggregate by season and reach
+  summarize(NO3.mean = mean(emmean.raw, na.rm = TRUE)) # na.rm = TRUE to remove missing values
+
+sort(xx$NO3.mean, index.return=T) #Shows sample event lowest to highest
+
 #make a new vector with the categorical times.  you'll need to adjust this 
 #for your soil graphics
 cat.time<-c("11Sep15", "11Sep15", "11Oct15", "11Oct15", "8Nov15", "8Nov15", "8May16", "8May16", "13Jun16", "13Jun16", "4Aug16", "4Aug16", "19Sep16", "19Sep16", "6Nov16", "6Nov16")
@@ -88,9 +83,17 @@ ggplot(data=x,
   xlab("Sample Event") +
   ylab(expression(Soil~Nitrate~(ug~NO[3]~-N~g^{-1}~soil))) +
   labs(fill="Budworm Activity") +
-  annotate("Text", x=2, y=15, label="Budworm Impact: P=0.7561", size=3) +
-  annotate("Text", x=2, y=14, label="Sample Event: P<0.0001", size=3) +
-  annotate("Text", x=2, y=13, label="Interaction: P=0.0030", size=3) +
+  annotate("Text", x=2, y=20, label="Budworm Impact: P=0.7561", size=3) +
+  annotate("Text", x=2, y=19, label="Sample Event: P<0.0001", size=3) +
+  annotate("Text", x=2, y=18, label="Interaction: P=0.0030", size=3) +
+  annotate("Text", x=1, y=3, label="a", size=3) +
+  annotate("Text", x=2, y=3, label="a", size=3) +
+  annotate("Text", x=3, y=3, label="a", size=3) +
+  annotate("Text", x=4, y=15, label="a", size=3) +
+  annotate("Text", x=5, y=3, label="a", size=3) +
+  annotate("Text", x=6, y=3, label="b", size=3) +
+  annotate("Text", x=7, y=3, label="a", size=3) +
+  annotate("Text", x=8, y=5, label="c", size=3) +
   theme_bw() +
   geom_hline(yintercept=0)+
   theme(panel.grid.major=element_blank(),
@@ -108,7 +111,7 @@ ggplot(data=x,
 
 
 #this will save the file
-ggsave('figures/emm NO3.tiff',
+ggsave('figures/emm soil NO3.tiff',
        units="in",
        width=5.5,
        height=4.5,

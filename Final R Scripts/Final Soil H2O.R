@@ -4,16 +4,6 @@ sm<-read.table(file="soil.data.3.csv", header=T, sep=",")
 
 #install packages
 
-install.packages("nlme")
-install.packages("lme4")
-install.packages("lmerTest")
-install.packages("dplyr")
-install.packages("nortest")
-install.packages("ggplot2")
-install.packages("multcomp")
-install.packages("MuMIn")
-install.packages("emmeans")
-
 library(nlme)
 library(lme4)
 library(lmerTest)
@@ -62,6 +52,13 @@ log.pct.moisture.emm
 
 x = log.pct.moisture.emm
 
+#sorted table for tukeys
+
+xx <- group_by(x, event) %>%  # Grouping function causes subsequent functions to aggregate by season and reach
+  summarize(pct.moisture.mean = mean(emmean.raw, na.rm = TRUE)) # na.rm = TRUE to remove missing values
+
+sort(xx$pct.moisture.mean, index.return=T) #Shows sample event lowest to highest
+
 #make a new vector with the categorical times.  you'll need to adjust this 
 #for your soil graphics
 cat.time<-c("11Sep15", "11Sep15", "11Oct15", "11Oct15", "8Nov15", "8Nov15", "8May16", "8May16", "13Jun16", "13Jun16", "4Aug16", "4Aug16", "19Sep16", "19Sep16", "6Nov16", "6Nov16")
@@ -85,33 +82,15 @@ ggplot(data=x,
   annotate("Text", x=2, y=29.5, label="Budworm Impact: P=0.8616", size=3) +
   annotate("Text", x=2, y=28.5, label="Sample Event: P<0.0001", size=3) +
   annotate("Text", x=1, y=12, label="a", size=3) +
-  annotate("Text", x=3, y=18, label="a", size=3) +
-  annotate("Text", x=4, y=26, label="a", size=3) +
-  annotate("Text", x=5, y=16, label="a", size=3) +
-  annotate("Text", x=6.1, y=30, label="a", size=3) +
-  annotate("Text", x=8, y=28, label="a", size=3) +
-  annotate("Text", x=2, y=27.5, label="b", size=3) +
-  annotate("Text", x=3, y=17, label="b", size=3) +
-  annotate("Text", x=4, y=25, label="b", size=3) +
-  annotate("Text", x=5, y=15, label="b", size=3) +
-  annotate("Text", x=6.1, y=29, label="b", size=3) +
-  annotate("Text", x=8, y=27, label="b", size=3) +
+  annotate("Text", x=6.1, y=29, label="a", size=3) +
+  annotate("Text", x=2.1, y=26.5, label="d", size=3) +
+  annotate("Text", x=2.1, y=27.5, label="a", size=3) +
   annotate("Text", x=3, y=16, label="c", size=3) +
-  annotate("Text", x=5, y=14, label="c", size=3) +
-  annotate("Text", x=6.1, y=28, label="c", size=3) +
-  annotate("Text", x=7, y=19, label="c", size=3) +
-  annotate("Text", x=4, y=24, label="d", size=3) +
-  annotate("Text", x=5, y=13, label="d", size=3) +
-  annotate("Text", x=6.1, y=27, label="d", size=3) +
-  annotate("Text", x=7, y=18, label="d", size=3) +
-  annotate("Text", x=5, y=12, label="e", size=3) +
-  annotate("Text", x=6.1, y=26, label="e", size=3) +
-  annotate("Text", x=7, y=17, label="e", size=3) +
-  annotate("Text", x=8, y=26, label="e", size=3) +
-  annotate("Text", x=6.1, y=25, label="f", size=3) +
-  annotate("Text", x=8, y=25, label="f", size=3) +
-  annotate("Text", x=7, y=16, label="g", size=3) +
-  annotate("Text", x=8, y=24, label="g", size=3) +
+  annotate("Text", x=4, y=24, label="c", size=3) +
+  annotate("Text", x=5, y=12, label="b", size=3) +
+  annotate("Text", x=6.1, y=28, label="e", size=3) +
+  annotate("Text", x=7, y=16, label="a", size=3) +
+  annotate("Text", x=8, y=24, label="c", size=3) +
   geom_hline(yintercept=0)+
   theme(panel.grid.major=element_blank(),
         panel.grid.minor=element_blank(),
@@ -128,7 +107,7 @@ ggplot(data=x,
 
 
 #this will save the file
-ggsave('figures/emm Moisture Content.tiff',
+ggsave('figures/emm soil Moisture Content.tiff',
        units="in",
        width=5.5,
        height=4.5,

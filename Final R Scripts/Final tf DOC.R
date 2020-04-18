@@ -2,18 +2,6 @@
 
 tf<-read.table(file="tf.only.summary.csv", header=T, sep=",")
 
-#install packages
-
-install.packages("nlme")
-install.packages("lme4")
-install.packages("lmerTest")
-install.packages("dplyr")
-install.packages("nortest")
-install.packages("ggplot2")
-install.packages("multcomp")
-install.packages("MuMIn")
-install.packages("emmeans")
-
 library(nlme)
 library(lme4)
 library(lmerTest)
@@ -41,7 +29,7 @@ M.full<-lme(log.doc.5th ~ impact*f.time,
 anova(M.full)
 
 #this extracts what you need to look at pairwise differences and make a graphic
-M.full.em = emmeans(M.full, ~ impact | f.time)
+M.full.em = emmeans(M.full, ~ f.time | impact)
 
 #this shows each pairwise difference (high v. low budworm at each sample event
 pairs(M.full.em)
@@ -68,6 +56,11 @@ log.doc.5th.emm
 
 x = log.doc.5th.emm
 
+xx <- group_by(x, event) %>%  # Grouping function causes subsequent functions to aggregate by season and reach
+  summarize(doc.mean = mean(emmean.raw, na.rm = TRUE)) # na.rm = TRUE to remove missing values
+
+sort(xx$doc.mean, index.return=T) #Shows sample event lowest to highest
+
 #make a new vector with the categorical times.  you'll need to adjust this 
 #for your soil graphics
 cat.time<-c("11Sep15", "11Sep15", "11Oct15", "11Oct15","29Oct15", "29Oct15", "8Nov15", "8Nov15")
@@ -87,8 +80,8 @@ ggplot(data=x,
   xlab("Sample Event") +
   ylab(expression(Throughfall~doc~(ug~N~L^{-1}))) +
   labs(fill="Budworm Activity") +
-  annotate("Text", x=1.25, y=198, label="Budworm Impact: P=0.1219", size=3) +
-  annotate("Text", x=1.25, y=192, label="Sample Event: P<0.0001", size=3) +
+  annotate("Text", x=1.25, y=198, label="Budworm Impact: P=0.8441", size=3) +
+  annotate("Text", x=1.25, y=192, label="Sample Event: P<0.0016", size=3) +
   theme_bw() +
   geom_hline(yintercept=0)+
   theme(panel.grid.major=element_blank(),

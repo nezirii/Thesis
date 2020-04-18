@@ -2,18 +2,6 @@
 
 tf<-read.table(file="tf.only.summary.csv", header=T, sep=",")
 
-#install packages
-
-install.packages("nlme")
-install.packages("lme4")
-install.packages("lmerTest")
-install.packages("dplyr")
-install.packages("nortest")
-install.packages("ggplot2")
-install.packages("multcomp")
-install.packages("MuMIn")
-install.packages("emmeans")
-
 library(nlme)
 library(lme4)
 library(lmerTest)
@@ -43,7 +31,7 @@ M.full<-lme(log.ug.din.5th ~ impact+f.time,
 anova(M.full)
 
 #this extracts what you need to look at pairwise differences and make a graphic
-M.full.em = emmeans(M.full, ~ impact | f.time)
+M.full.em = emmeans(M.full, ~ f.time | impact)
 
 #this shows each pairwise difference (high v. low budworm at each sample event
 pairs(M.full.em)
@@ -59,16 +47,16 @@ event = c(1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10)
 log.ug.din.5th.emm = data.frame(cbind(xx,impact,event))
 log.ug.din.5th.emm$emmean.raw = (10^(log.ug.din.5th.emm$emmean))^5
 log.ug.din.5th.emm$SE.raw = (10^(log.ug.din.5th.emm$SE))^5
-#CPA - those are grouped wrong.  should be
-#log.din.5th.emm$emmean.raw = (10^(log.din.5th.emm$emmean))^5
-#etc.  that will change your plot below since the error bars will be going in the other direction
-
-
 
 #this is the final table you can use for plotting
 log.ug.din.5th.emm
 
 x = log.ug.din.5th.emm
+
+xx <- group_by(x, event) %>%  # Grouping function causes subsequent functions to aggregate by season and reach
+  summarize(din.mean = mean(emmean.raw, na.rm = TRUE)) # na.rm = TRUE to remove missing values
+
+sort(xx$din.mean, index.return=T) #Shows sample event lowest to highest
 
 #make a new vector with the categorical times.  you'll need to adjust this 
 #for your soil graphics
@@ -92,6 +80,18 @@ ggplot(data=x,
   annotate("Text", x=2, y=110, label="Budworm Impact: P=0.1219", size=3) +
   annotate("Text", x=2, y=106, label="Sample Event: P<0.0001", size=3) +
   theme_bw() +
+  annotate("Text", x=1, y=70, label="a", size=3) +
+  annotate("Text", x=2, y=40, label="a", size=3) +
+  annotate("Text", x=3, y=98, label="a", size=3) +
+  annotate("Text", x=3, y=96, label="c", size=3) +
+  annotate("Text", x=4, y=110, label="b", size=3) +
+  annotate("Text", x=4, y=108, label="c", size=3) +
+  annotate("Text", x=5, y=50, label="a", size=3) +
+  annotate("Text", x=6, y=45, label="b", size=3) +
+  annotate("Text", x=7, y=25, label="a", size=3) +
+  annotate("Text", x=8, y=65, label="a", size=3) +
+  annotate("Text", x=9, y=70, label="b", size=3) +
+  annotate("Text", x=10, y=30, label="a", size=3) +
   geom_hline(yintercept=0)+
   theme(panel.grid.major=element_blank(),
         panel.grid.minor=element_blank(),
