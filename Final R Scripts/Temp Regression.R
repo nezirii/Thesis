@@ -12,17 +12,8 @@ library(multcomp)
 library(MuMIn)
 library(emmeans)
 
-scatter.smooth(x=st$o.temp.2cm, y=st$air.temp, main="Air ~ 2cm")
-
-par(mfrow=c(1, 2))  # divide graph area in 2 columns
-
-boxplot(st$o.temp.2cm, main="2cm Depth", 
-        sub=paste("Outlier rows: ", 
-        boxplot.stats(st$o.temp.2cm)$out))
-
-boxplot(st$air.temp, main="Air", 
-        sub=paste("Outlier rows: ", 
-        boxplot.stats(st$air.temp)$out))
+plot(x=st$o.temp.2cm, y=st$air.temp, main="Air ~ 2cm")
+abline(M0)
 
 cor(st$o.temp.2cm, st$air.temp)
 

@@ -29,7 +29,7 @@ M.full<-lme(log.ug.no3.no2 ~ impact*f.time, random=~1|nest,
 anova(M.full)
 
 #this extracts what you need to look at pairwise differences and make a graphic
-M.full.em = emmeans(M.full, ~ f.time | impact)
+M.full.em = emmeans(M.full, ~ impact | f.time)
 
 #this shows each pairwise difference (high v. low budworm at each sample event
 pairs(M.full.em)
@@ -45,10 +45,6 @@ event = c(1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8)
 log.ug.no3.no2.emm = data.frame(cbind(xx,impact,event))
 log.ug.no3.no2.emm$emmean.raw = 10^(log.ug.no3.no2.emm$emmean)
 log.ug.no3.no2.emm$SE.raw = 10^(log.ug.no3.no2.emm$SE)
-#CPA - those are grouped wrong.  should be
-#etc.  that will change your plot below since the error bars will be going in the other direction
-
-
 
 #this is the final table you can use for plotting
 log.ug.no3.no2.emm
@@ -82,16 +78,8 @@ ggplot(data=x,
   annotate("Text", x=2, y=150, label="Budworm Impact: P=0.1219", size=3) +
   annotate("Text", x=2, y=144, label="Sample Event: P<0.0001", size=3) +
   theme_bw() +
-  annotate("Text", x=1, y=52, label="a", size=3) +
-  annotate("Text", x=1, y=48, label="b", size=3) +
-  annotate("Text", x=2, y=37, label="a", size=3) +
-  annotate("Text", x=3, y=37, label="a", size=3) +
-  annotate("Text", x=4, y=20, label="a", size=3) +
-  annotate("Text", x=5, y=155, label="a", size=3) +
-  annotate("Text", x=6, y=16.5, label="c", size=3) +
-  annotate("Text", x=7, y=37, label="a", size=3) +
-  annotate("Text", x=8, y=120, label="a", size=3) +
-  annotate("Text", x=8, y=116, label="b", size=3) +
+  annotate("Text", x=5, y=155, label="*", size=4) +
+  annotate("Text", x=8, y=116, label="*", size=4) +
   geom_hline(yintercept=0)+
   theme(panel.grid.major=element_blank(),
         panel.grid.minor=element_blank(),

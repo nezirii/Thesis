@@ -31,7 +31,7 @@ M.full<-lme(log.ng.NO3.5th ~ impact*f.time,
 anova(M.full)
 
 #this extracts what you need to look at pairwise differences and make a graphic
-M.full.em = emmeans(M.full, ~ f.time | impact)
+M.full.em = emmeans(M.full, ~ impact | f.time)
 
 #this shows each pairwise difference (high v. low budworm at each sample event
 pairs(M.full.em)
@@ -83,17 +83,11 @@ ggplot(data=x,
   xlab("Sample Event") +
   ylab(expression(Soil~Nitrate~(ug~NO[3]~-N~g^{-1}~soil))) +
   labs(fill="Budworm Activity") +
-  annotate("Text", x=2, y=20, label="Budworm Impact: P=0.7561", size=3) +
-  annotate("Text", x=2, y=19, label="Sample Event: P<0.0001", size=3) +
-  annotate("Text", x=2, y=18, label="Interaction: P=0.0030", size=3) +
-  annotate("Text", x=1, y=3, label="a", size=3) +
-  annotate("Text", x=2, y=3, label="a", size=3) +
-  annotate("Text", x=3, y=3, label="a", size=3) +
-  annotate("Text", x=4, y=15, label="a", size=3) +
-  annotate("Text", x=5, y=3, label="a", size=3) +
-  annotate("Text", x=6, y=3, label="b", size=3) +
-  annotate("Text", x=7, y=3, label="a", size=3) +
-  annotate("Text", x=8, y=5, label="c", size=3) +
+  annotate("Text", x=2, y=15, label="Budworm Impact: P=0.7561", size=3) +
+  annotate("Text", x=2, y=14, label="Sample Event: P<0.0001", size=3) +
+  annotate("Text", x=2, y=13, label="Interaction: P=0.0030", size=3) +
+  annotate("Text", x=6, y=3, label="*", size=4) +
+  annotate("Text", x=8, y=5, label="*", size=4) +
   theme_bw() +
   geom_hline(yintercept=0)+
   theme(panel.grid.major=element_blank(),

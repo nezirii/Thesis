@@ -55,9 +55,9 @@ x = log.pct.moisture.emm
 #sorted table for tukeys
 
 xx <- group_by(x, event) %>%  # Grouping function causes subsequent functions to aggregate by season and reach
-  summarize(pct.moisture.mean = mean(emmean.raw, na.rm = TRUE)) # na.rm = TRUE to remove missing values
+  summarize(log.pct.moisture.mean = mean(emmean.raw, na.rm = TRUE)) # na.rm = TRUE to remove missing values
 
-sort(xx$pct.moisture.mean, index.return=T) #Shows sample event lowest to highest
+sort(xx$log.pct.moisture.mean, index.return=T) #Shows sample event lowest to highest
 
 #make a new vector with the categorical times.  you'll need to adjust this 
 #for your soil graphics

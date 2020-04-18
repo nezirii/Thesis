@@ -21,8 +21,6 @@ tf$nest <- with(tf, factor(paste(location,f.plot)))
 tf$ug.nh4<-1000*(tf$nh4)
 
 tf$log.ug.nh4<-log10(tf$ug.nh4)
-tf$nh4.5th<-(tf$nh4)^(1/5)
-tf$log.nh4.5th<-log10(tf$nh4.5th)
 
 #final model
 M.full<-lme(log.ug.nh4 ~ impact*f.time, random=~1|nest, 
@@ -52,7 +50,7 @@ log.ug.nh4.emm
 x = log.ug.nh4.emm
 
 xx <- group_by(x, event) %>%  # Grouping function causes subsequent functions to aggregate by season and reach
-  summarize(NO3.mean = mean(emmean.raw, na.rm = TRUE)) # na.rm = TRUE to remove missing values
+  summarize(NO3.mean = mean(emmean, na.rm = TRUE)) # na.rm = TRUE to remove missing values
 
 sort(xx$NO3.mean, index.return=T) #Shows sample event lowest to highest
 
@@ -67,18 +65,22 @@ x$cat.time<-factor(x$cat.time, levels=unique(x$cat.time))
 pd=position_dodge(0.1)
 
 ggplot(data=x, 
-       aes(x=cat.time, y=emmean.raw, fill=impact)) + 
+       aes(x=cat.time, y=emmean, fill=impact)) + 
   geom_bar(stat="identity", position=position_dodge(), color = "black") + 
-  geom_errorbar(aes(ymin=emmean.raw, ymax=emmean.raw+SE.raw), width=0.2, 
+  geom_errorbar(aes(ymin=emmean, ymax=emmean+SE), width=0.2, 
                 position=position_dodge(0.9)) + 
   scale_fill_manual(values=c("black","white")) +
   xlab("Sample Event") +
-  ylab(expression(Throughfall~nh4~(ug~N~L^{-1}))) +
+  ylab(expression(Throughfall~log~nh4~(ug~N~L^{-1}))) +
   labs(fill="Budworm Activity") +
-  annotate("Text", x=2, y=170, label="Budworm Impact: P=0.0115", size=3) +
-  annotate("Text", x=2, y=164, label="Sample Event: P<0.0001", size=3) +
-  annotate("Text", x=2, y=158, label="Interaction: P<0.0001", size=3) +
+  annotate("Text", x=2, y=2.4, label="Budworm Impact: P=0.0115", size=3) +
+  annotate("Text", x=2, y=2.3, label="Sample Event: P<0.0001", size=3) +
+  annotate("Text", x=2, y=2.2, label="Interaction: P<0.0001", size=3) +
   theme_bw() +
+  annotate("Text", x=1, y=1.7, label="*", size=4) +
+  annotate("Text", x=7, y=2.5, label="*", size=4) +
+  annotate("Text", x=8, y=1.6, label="*", size=4) +
+  annotate("Text", x=9, y=1.8, label="*", size=4) +
   geom_hline(yintercept=0)+
   theme(panel.grid.major=element_blank(),
         panel.grid.minor=element_blank(),

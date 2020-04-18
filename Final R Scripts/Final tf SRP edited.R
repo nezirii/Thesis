@@ -19,8 +19,6 @@ tf$f.plot<-factor(tf$plot)
 tf$nest <- with(tf, factor(paste(location,f.plot)))
 
 tf$log.srp<-log10(tf$srp)
-tf$srp.5th<-(tf$srp)^(1/5)
-tf$log.srp.5th<-log10(tf$srp.5th)
 
 #final model
 M.full<-lme(log.srp ~ impact*f.time, random=~1|nest, 
@@ -65,16 +63,16 @@ x$cat.time<-factor(x$cat.time, levels=unique(x$cat.time))
 pd=position_dodge(0.1)
 
 ggplot(data=x, 
-       aes(x=cat.time, y=emmean.raw, fill=impact)) + 
+       aes(x=cat.time, y=emmean, fill=impact)) + 
   geom_bar(stat="identity", position=position_dodge(), color = "black") + 
-  geom_errorbar(aes(ymin=emmean.raw, ymax=emmean.raw+SE.raw), width=0.2, 
+  geom_errorbar(aes(ymin=emmean-SE, ymax=emmean+SE), width=0.2, 
                 position=position_dodge(0.9)) + 
-  scale_fill_manual(values=c("black","white")) +
+  scale_fill_manual(values=c("gray","white")) +
   xlab("Sample Event") +
   ylab(expression(Throughfall~srp~(ug~N~L^{-1}))) +
   labs(fill="Budworm Activity") +
-  annotate("Text", x=2, y=150,label="Budworm Impact: P=0.2222", size=3) +
-  annotate("Text", x=2, y=146, label="Sample Event: P<0.0001", size=3) +
+  annotate("Text", x=2, y=2,label="Budworm Impact: P=0.2222", size=3) +
+  annotate("Text", x=2, y=1.9, label="Sample Event: P<0.0001", size=3) +
   theme_bw() +
   geom_hline(yintercept=0)+
   theme(panel.grid.major=element_blank(),

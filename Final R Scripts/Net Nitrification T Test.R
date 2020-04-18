@@ -29,9 +29,9 @@ t.test(sm$net.nitrification,
 #for your soil graphics
 cat.time<-c("16Apr16", "16Apr16", "6Nov16", "6Nov16")
 #force the new vector to be characters
-x$cat.time<-as.character(cat.time)
+cat.time<-as.character(cat.time)
 #force the new vector to be ordered in the order you gave it instead of alphabetical
-x$cat.time<-factor(x$cat.time, levels=unique(x$cat.time))
+cat.time<-factor(cat.time, levels=unique(cat.time))
 
 x <- group_by(sm, cat.time, impact) %>%  # Grouping function causes subsequent functions to aggregate by season and reach
   summarize(net.nitrification.mean = abs(mean(net.nitrification, na.rm = TRUE)), # na.rm = TRUE to remove missing values

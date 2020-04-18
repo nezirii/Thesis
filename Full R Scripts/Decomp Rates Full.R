@@ -2,7 +2,6 @@
 
 decomp=read.table(file="decomp.rates.2.5.csv", header=T, sep=",")
 
-
 #set factors
 
 decomp$f.plot<-factor(decomp$plot)
@@ -66,6 +65,7 @@ E1<-residuals(M1)
 plot(E1)
 
 summary(M1)
+anova(M1)
 
 #test M1 and M2 to see if random effects are better than using location as a block 
 anova(M1,M2)
@@ -115,10 +115,9 @@ ggplot(data=x,
   ylab("Decomposition Rate (-k)")  + #I changed your y axis label
   ylim(0,.0015) +
   labs(fill="Budworm Activity") +
-  annotate("Text", x=1, y=.0015, label="Interaction: P<0.0001", size=4) +
   annotate("Text", x=1, y=.00145, label="Budworm Impact: P=0.0024", size=4) +
-  annotate("Text", x=1, y=.0014, label="Leaf Type: P<0.6848", size=4) +
-  annotate("Text", x=1, y=.00135, label="Budworm Impact:Leaf Type Interaction: P<0.7915", size=4) +
+  annotate("Text", x=1, y=.0014, label="Leaf Type: P=0.6848", size=4) +
+  annotate("Text", x=1, y=.00135, label="Budworm Impact:Leaf Type Interaction: P=0.7915", size=4) +
   theme_bw() +
   theme(panel.grid.major=element_blank(),
         panel.grid.minor=element_blank(),

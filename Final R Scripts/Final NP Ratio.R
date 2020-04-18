@@ -4,16 +4,6 @@ sm<-read.table(file="soil.data.3.csv", header=T, sep=",")
 
 #install packages
 
-install.packages("nlme")
-install.packages("lme4")
-install.packages("lmerTest")
-install.packages("dplyr")
-install.packages("nortest")
-install.packages("ggplot2")
-install.packages("multcomp")
-install.packages("MuMIn")
-install.packages("emmeans")
-
 library(nlme)
 library(lme4)
 library(lmerTest)
@@ -30,19 +20,17 @@ sm$f.time<-factor(sm$time)
 sm$f.plot<-factor(sm$plot)
 sm$nest <- with(sm, factor(paste(location,f.plot)))
 
-sm$ug.N.P<-1000*(sm$N.P)
-
-sm$log.ug.N.P<-log10(sm$ug.N.P)
+sm$log.m.n.p<-log10(sm$m.n.p)
 
 #final model
-M.full<-lme(log.ug.N.P ~ impact+f.time, random=~1|nest, 
+M.full<-lme(log.m.n.p ~ impact+f.time, random=~1|nest, 
             na.action=na.omit, data=sm, method="ML")
 
 anova(M.full)
 
 #this extracts what you need to look at pairwise differences and make a graphic
 M.full.em = emmeans(M.full, ~ f.time | impact)
-
+M.full.em = emmeans(M.full,~ impact)
 #this shows each pairwise difference (high v. low budworm at each sample event
 pairs(M.full.em)
 
@@ -54,17 +42,19 @@ impact<-recode(impact, "a" ="High")
 impact<-recode(impact, "b" ="Low")
 event = c(1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8)
 
-log.ug.N.P.emm = data.frame(cbind(xx,impact,event))
-log.ug.N.P.emm$emmean.raw = (10^(log.ug.N.P.emm$emmean))
-log.ug.N.P.emm$SE.raw = (10^(log.ug.N.P.emm$SE))
-#etc.  that will change your plot below since the error bars will be going in the other direction
-
-
+log.m.n.p.emm = data.frame(cbind(xx,impact,event))
 
 #this is the final table you can use for plotting
-log.ug.N.P.emm
+log.m.n.p.emm
 
-x = log.ug.N.P.emm
+x = log.m.n.p.emm
+
+#sorted table for tukeys
+
+xx <- group_by(x, event) %>%  # Grouping function causes subsequent functions to aggregate by season and reach
+  summarize(m.n.p.mean = mean(emmean, na.rm = TRUE)) # na.rm = TRUE to remove missing values
+
+sort(xx$m.n.p.mean, index.return=T) #Shows sample event lowest to highest
 
 #make a new vector with the categorical times.  you'll need to adjust this 
 #for your soil graphics
@@ -77,16 +67,16 @@ x$cat.time<-factor(x$cat.time, levels=unique(x$cat.time))
 pd=position_dodge(0.1)
 
 ggplot(data=x, 
-       aes(x=cat.time, y=emmean.raw, fill=impact)) + 
+       aes(x=cat.time, y=emmean, fill=impact)) + 
   geom_bar(stat="identity", position=position_dodge(), color = "black") + 
-  geom_errorbar(aes(ymin=emmean.raw, ymax=emmean.raw+SE.raw), width=0.2, 
+  geom_errorbar(aes(ymin=emmean-SE, ymax=emmean+SE), width=0.2, 
                 position=position_dodge(0.9)) + 
-  scale_fill_manual(values=c("black","white")) +
+  scale_fill_manual(values=c("gray","white")) +
   xlab("Sample Event") +
   ylab("Nitrogen to Phosphorous Ratio (ug)") +
   labs(fill="Budworm Activity") +
-  annotate("Text", x=2, y=450, label="Budworm Impact: P=0.0057", size=3) +
-  annotate("Text", x=2, y=435, label="Sample Event: P<0.0001", size=3) +
+  annotate("Text", x=2, y=0.4, label="Budworm Impact: P=0.0057", size=3) +
+  annotate("Text", x=2, y=0.3, label="Sample Event: P<0.0001", size=3) +
   theme_bw() +
   geom_hline(yintercept=0)+
   theme(panel.grid.major=element_blank(),

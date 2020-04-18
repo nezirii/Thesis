@@ -18,10 +18,6 @@ st$f.time<-factor(st$time)
 st$f.plot<-factor(st$plot)
 st$nest <- with(st, factor(paste(location,f.plot)))
 
-st$log.o.temp.2cm<-log10(st$o.temp.2cm)
-st$o.temp.2cm.5th<-(st$o.temp.2cm)^(1/5)
-st$log.o.temp.2cm.5th<-log10(st$o.temp.2cm.5th)
-
 #final model
 M.full<-lme(o.temp.2cm~ impact*f.time, random=~1|nest, 
             na.action=na.omit, data=st)
@@ -29,7 +25,7 @@ M.full<-lme(o.temp.2cm~ impact*f.time, random=~1|nest,
 anova(M.full)
 
 #this extracts what you need to look at pairwise differences and make a graphic
-M.full.em = emmeans(M.full, ~ f.time | impact)
+M.full.em = emmeans(M.full, ~ impact | f.time)
 
 #this shows each pairwise difference (high v. low budworm at each sample event
 pairs(M.full.em)
@@ -68,27 +64,22 @@ x$cat.time<-factor(x$cat.time, levels=unique(x$cat.time))
 pd=position_dodge(0.1)
 
 ggplot(data=x, 
-       aes(x=cat.time, y=emmean.raw, fill=impact)) + 
+       aes(x=cat.time, y=emmean, fill=impact)) + 
   geom_bar(stat="identity", position=position_dodge(), color = "black") + 
-  geom_errorbar(aes(ymin=emmean.raw, ymax=emmean.raw+SE.raw), width=0.2, 
+  geom_errorbar(aes(ymin=emmean, ymax=emmean+SE), width=0.2, 
                 position=position_dodge(0.9)) + 
   scale_fill_manual(values=c("black","white")) +
   xlab("Sample Event") +
   ylab(expression(Soil~Temperature~at~2~cm~~(C))) +
   labs(fill="Budworm Activity") +
-  annotate("Text", x=2, y=1, label="Budworm Impact: P=0.2769", size=3) +
-  annotate("Text", x=2, y=2, label="Sample Event: P<0.0001", size=3) +
-  annotate("Text", x=2, y=3, label="Interaction: P<0.0001", size=3) +
+  annotate("Text", x=2, y=23, label="Budworm Impact: P=0.2769", size=3) +
+  annotate("Text", x=2, y=22, label="Sample Event: P<0.0001", size=3) +
+  annotate("Text", x=2, y=21, label="Interaction: P<0.0001", size=3) +
   theme_bw() +
-  annotate("Text", x=1, y=10, label="a", size=3) +
-  annotate("Text", x=2, y=14, label="b", size=3) +
-  annotate("Text", x=3, y=13, label="c", size=3) +
-  annotate("Text", x=4, y=12, label="b", size=3) +
-  annotate("Text", x=5, y=17, label="b", size=3) +
-  annotate("Text", x=5, y=16.5, label="d", size=3) +
-  annotate("Text", x=6, y=9, label="a", size=3) +
-  annotate("Text", x=7, y=10, label="d", size=3) +
-  annotate("Text", x=8, y=5, label="e", size=3) +
+  annotate("Text", x=2, y=10, label="*", size=4) +
+  annotate("Text", x=4, y=12, label="*", size=4) +
+  annotate("Text", x=5, y=17, label="*", size=4) +
+  annotate("Text", x=6, y=23, label="*", size=4) +
   geom_hline(yintercept=0)+
   theme(panel.grid.major=element_blank(),
         panel.grid.minor=element_blank(),

@@ -18,7 +18,6 @@ sm$f.time<-factor(sm$time)
 sm$f.plot<-factor(sm$plot)
 sm$nest <- with(sm, factor(paste(location,f.plot)))
 
-sm$log.pct.om<-log10(sm$pct.om)
 sm$pct.om.5th<-(sm$pct.om)^(1/5)
 sm$log.pct.om.5th<-log10(sm$pct.om.5th)
 
@@ -52,11 +51,6 @@ log.pct.om.5th.emm$SE.raw = (10^(log.pct.om.5th.emm$SE))^5
 log.pct.om.5th.emm
 
 x = log.pct.om.5th.emm
-
-xx <- group_by(x, event) %>%  # Grouping function causes subsequent functions to aggregate by season and reach
-  summarize(pct.om.mean = mean(emmean.raw, na.rm = TRUE)) # na.rm = TRUE to remove missing values
-
-sort(xx$pct.om.mean, index.return=T) #Shows sample event lowest to highest
 
 #make a new vector with the categorical times.  you'll need to adjust this 
 #for your soil graphics
