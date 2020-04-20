@@ -1,6 +1,6 @@
 #load data
 
-tf<-read.table(file="tf.only.summary.csv", header=T, sep=",")
+tf<-read.table(file="tf.summary.csv", header=T, sep=",")
 
 library(nlme)
 library(lme4)
@@ -47,6 +47,10 @@ event = c(1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10)
 log.ug.din.5th.emm = data.frame(cbind(xx,impact,event))
 log.ug.din.5th.emm$emmean.raw = (10^(log.ug.din.5th.emm$emmean))^5
 log.ug.din.5th.emm$SE.raw = (10^(log.ug.din.5th.emm$SE))^5
+
+din.emm = data.frame(cbind(xx,impact,event))
+din.emm$emmean.raw = (10^(log.ug.din.5th.emm$emmean))^5
+din.emm$SE.raw = (10^(log.ug.din.5th.emm$SE))^5
 
 #this is the final table you can use for plotting
 log.ug.din.5th.emm

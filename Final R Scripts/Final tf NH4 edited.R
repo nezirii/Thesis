@@ -1,6 +1,6 @@
 #load data
 
-tf<-read.table(file="tf.only.summary.csv", header=T, sep=",")
+tf<-read.table(file="tf.summary.csv", header=T, sep=",")
 
 library(nlme)
 library(lme4)
@@ -37,10 +37,10 @@ pairs(M.full.em)
 #the next several lines are builnh4g a table you can use in ggplot
 xx = as.data.frame(summary(M.full.em))[c('emmean', 'SE')]
 
-impact = rep((letters[seq(from = 1, to = 2)]), 9)#you only have 9 sample periods in your data because you are missing time = 3, so this line isn't working since it's trying to put in 10 values.  Nothing below it will work either.
+impact = rep((letters[seq(from = 1, to = 2)]), 10)#you only have 9 sample periods in your data because you are missing time = 3, so this line isn't working since it's trying to put in 10 values.  Nothing below it will work either.
 impact<-recode(impact, "a" ="High")
 impact<-recode(impact, "b" ="Low")
-event = c(1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9)
+event = c(1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10)
 
 log.ug.nh4.emm = data.frame(cbind(xx,impact,event))
 
@@ -56,7 +56,7 @@ sort(xx$NO3.mean, index.return=T) #Shows sample event lowest to highest
 
 #make a new vector with the categorical times.  you'll need to adjust this 
 #for your soil graphics
-cat.time<-c("11Sep15", "11Sep15", "11Oct15", "11Oct15", "8Nov15", "8Nov15", "8May16", "8May16", "4Jun16", "4Jun16", "21Jun16", "21Jun16", "13Jul16", "13Jul16", "21Jul16", "21Jul16", "9Sep16", "9Sep16")
+cat.time<-c("11Sep15", "11Sep15", "11Oct15", "11Oct15","29Oct15", "29Oct15", "8Nov15", "8Nov15", "8May16", "8May16", "4Jun16", "4Jun16", "21Jun16", "21Jun16", "13Jul16", "13Jul16", "21Jul16", "21Jul16", "9Sep16", "9Sep16")
 #force the new vector to be characters
 x$cat.time<-as.character(cat.time)
 #force the new vector to be ordered in the order you gave it instead of alphabetical
@@ -77,10 +77,11 @@ ggplot(data=x,
   annotate("Text", x=2, y=2.3, label="Sample Event: P<0.0001", size=3) +
   annotate("Text", x=2, y=2.2, label="Interaction: P<0.0001", size=3) +
   theme_bw() +
-  annotate("Text", x=1, y=1.7, label="*", size=4) +
-  annotate("Text", x=7, y=2.5, label="*", size=4) +
-  annotate("Text", x=8, y=1.6, label="*", size=4) +
-  annotate("Text", x=9, y=1.8, label="*", size=4) +
+  annotate("Text", x=1, y=1.8, label="*", size=4) +
+  annotate("Text", x=6, y=2.1, label="*", size=4) +
+  annotate("Text", x=7, y=2.2, label="*", size=4) +
+  annotate("Text", x=8, y=2.4, label="*", size=4) +
+  annotate("Text", x=9, y=1.6, label="*", size=4) +
   geom_hline(yintercept=0)+
   theme(panel.grid.major=element_blank(),
         panel.grid.minor=element_blank(),

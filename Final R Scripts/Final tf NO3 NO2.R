@@ -1,6 +1,6 @@
 #load data
 
-tf<-read.table(file="tf.only.summary.csv", header=T, sep=",")
+tf<-read.table(file="tf.summary.csv", header=T, sep=",")
 
 library(nlme)
 library(lme4)
@@ -37,10 +37,10 @@ pairs(M.full.em)
 #the next several lines are builno3.no2g a table you can use in ggplot
 xx = as.data.frame(summary(M.full.em))[c('emmean', 'SE')]
 
-impact = rep((letters[seq(from = 1, to = 2)]), 8)#you only have 8 times contrasted...aren't there 10 sample periods?  For the same reason as ammonium, this line and subsequent lines won't work since your trying to make it out of 10 times instead of 8.  but it should be 10 in teh original data
+impact = rep((letters[seq(from = 1, to = 2)]), 10)#you only have 8 times contrasted...aren't there 10 sample periods?  For the same reason as ammonium, this line and subsequent lines won't work since your trying to make it out of 10 times instead of 8.  but it should be 10 in teh original data
 impact<-recode(impact, "a" ="High")
 impact<-recode(impact, "b" ="Low")
-event = c(1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8)
+event = c(1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10)
 
 log.ug.no3.no2.emm = data.frame(cbind(xx,impact,event))
 log.ug.no3.no2.emm$emmean.raw = 10^(log.ug.no3.no2.emm$emmean)
@@ -58,7 +58,7 @@ sort(xx$NO3.mean, index.return=T) #Shows sample event lowest to highest
 
 #make a new vector with the categorical times.  you'll need to adjust this 
 #for your soil graphics
-cat.time<-c("11Sep15", "11Sep15", "11Oct15", "11Oct15","29Oct15", "29Oct15", "8Nov15", "8Nov15", "8May16", "8May16", "4Jun16", "4Jun16", "21Jun16", "21Jun16", "13Jul16", "13Jul16")
+cat.time<-c("11Sep15", "11Sep15", "11Oct15", "11Oct15","29Oct15", "29Oct15", "8Nov15", "8Nov15", "8May16", "8May16", "4Jun16", "4Jun16", "21Jun16", "21Jun16", "13Jul16", "13Jul16", "21Jul16", "21Jul16", "9Sep16", "9Sep16")
 #force the new vector to be characters
 x$cat.time<-as.character(cat.time)
 #force the new vector to be ordered in the order you gave it instead of alphabetical
@@ -75,11 +75,13 @@ ggplot(data=x,
   xlab("Sample Event") +
   ylab(expression(Throughfall~no3.no2~(ug~N~L^{-1}))) +
   labs(fill="Budworm Activity") +
-  annotate("Text", x=2, y=150, label="Budworm Impact: P=0.1219", size=3) +
+  annotate("Text", x=2, y=150, label="Budworm Impact: P=0.6275", size=3) +
   annotate("Text", x=2, y=144, label="Sample Event: P<0.0001", size=3) +
+  annotate("Text", x=2, y=138, label="Interaction: P<0.0001", size=3) +
   theme_bw() +
-  annotate("Text", x=5, y=155, label="*", size=4) +
-  annotate("Text", x=8, y=116, label="*", size=4) +
+  annotate("Text", x=5, y=160, label="*", size=4) +
+  annotate("Text", x=8, y=160, label="*", size=4) +
+  annotate("Text", x=9, y=70, label="*", size=4) +
   geom_hline(yintercept=0)+
   theme(panel.grid.major=element_blank(),
         panel.grid.minor=element_blank(),
