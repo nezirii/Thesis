@@ -12,7 +12,8 @@ library(multcomp)
 library(MuMIn)
 library(emmeans)
 
-plot(x=st$o.temp.2cm, y=st$air.temp, main="Air ~ 2cm")
+plot(x=st$o.temp.2cm, y=st$air.temp, xlab="2cm Depth", ylab="10cm Depth")
+   
 abline(M0)
 
 cor(st$o.temp.2cm, st$air.temp)

@@ -87,7 +87,7 @@ ggplot(data=x,
   annotate("Text", x=2, y=14, label="Sample Event: P<0.0001", size=3) +
   annotate("Text", x=2, y=13, label="Interaction: P=0.0030", size=3) +
   annotate("Text", x=6, y=3, label="*", size=4) +
-  annotate("Text", x=8, y=5, label="*", size=4) +
+  annotate("Text", x=8, y=14, label="*", size=4) +
   theme_bw() +
   geom_hline(yintercept=0)+
   theme(panel.grid.major=element_blank(),
