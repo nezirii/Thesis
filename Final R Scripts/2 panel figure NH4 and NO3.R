@@ -200,3 +200,5 @@ tiff(filename = 'figures/TF_N.tiff', #open plotting device
      compression = "lzw")
 grid.arrange(gA, gB, nrow=2, ncol=1)  # push plot to device
 dev.off()  # close device
+
+#wont load
