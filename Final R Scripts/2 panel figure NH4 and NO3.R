@@ -53,12 +53,11 @@ xx <- group_by(x, event) %>%  # Grouping function causes subsequent functions to
 
 sort(xx$NO3.mean, index.return=T) #Shows sample event lowest to highest
 
-#make a new vector with the categorical times.  you'll need to adjust this 
-#for your soil graphics
+
 cat.time<-c("11Sep15", "11Sep15", "11Oct15", "11Oct15","29Oct15", "29Oct15", "8Nov15", "8Nov15", "8May16", "8May16", "4Jun16", "4Jun16", "21Jun16", "21Jun16", "13Jul16", "13Jul16", "21Jul16", "21Jul16", "9Sep16", "9Sep16")
-#force the new vector to be characters
+
 x$cat.time<-as.character(cat.time)
-#force the new vector to be ordered in the order you gave it instead of alphabetical
+
 x$cat.time<-factor(x$cat.time, levels=unique(x$cat.time))
 
 pd=position_dodge(0.1)
@@ -71,23 +70,23 @@ ggplot(data=x,
                 position=position_dodge(0.9)) + 
   scale_fill_manual(values=c("gray","white")) +
   xlab("Sample Event") +
-  ylab(expression(Throughfall~log~nh4~(ug~N~L^{-1}))) +
+  ylab(expression(Throughfall~log~Ammonium~(μg~N~L^{-1}))) +
   labs(fill="Budworm Activity") +
-  annotate("Text", x=2, y=2.4, label="Budworm Impact: P=0.0115", size=3) +
-  annotate("Text", x=2, y=2.3, label="Sample Event: P<0.0001", size=3) +
-  annotate("Text", x=2, y=2.2, label="Interaction: P<0.0001", size=3) +
+  annotate("Text", x=5, y=2.3, label="Budworm Impact: P=0.0115", size=3) +
+  annotate("Text", x=5, y=2.2, label="Sample Event: P<0.0001", size=3) +
+  annotate("Text", x=5, y=2.1, label="Interaction: P<0.0001", size=3) +
   theme_bw() +
   annotate("Text", x=1, y=1.8, label="*", size=4) +
-  annotate("Text", x=6, y=2.1, label="*", size=4) +
-  annotate("Text", x=7, y=2.2, label="*", size=4) +
+  annotate("Text", x=6, y=1.9, label="*", size=4) +
+  annotate("Text", x=7, y=2, label="*", size=4) +
   annotate("Text", x=8, y=2.4, label="*", size=4) +
-  annotate("Text", x=9, y=1.6, label="*", size=4) +
+  annotate("Text", x=9, y=2, label="*", size=4) +
   geom_hline(yintercept=0)+
   theme(panel.grid.major=element_blank(),
         panel.grid.minor=element_blank(),
         legend.title=element_text(size=8),
         legend.key=element_blank(),
-        legend.position=c(0.2,0.98),
+        legend.position=c(0.5,0.96),
         legend.text=element_text(size=8),
         legend.background=element_blank(),
         legend.direction="horizontal",
@@ -154,11 +153,11 @@ ggplot(data=x,
                 position=position_dodge(0.9)) + 
   scale_fill_manual(values=c("gray","white")) +
   xlab("Sample Event") +
-  ylab(expression(Throughfall~no3.no2~(ug~N~L^{-1}))) +
+  ylab(expression(Throughfall~log~Nitrate~(μ~N~L^{-1}))) +
   labs(fill="Budworm Activity") +
   annotate("Text", x=2, y=150, label="Budworm Impact: P=0.6275", size=3) +
-  annotate("Text", x=2, y=144, label="Sample Event: P<0.0001", size=3) +
-  annotate("Text", x=2, y=138, label="Interaction: P<0.0001", size=3) +
+  annotate("Text", x=2, y=142, label="Sample Event: P<0.0001", size=3) +
+  annotate("Text", x=2, y=134, label="Interaction: P<0.0001", size=3) +
   theme_bw() +
   annotate("Text", x=5, y=160, label="*", size=4) +
   annotate("Text", x=8, y=160, label="*", size=4) +
@@ -168,7 +167,7 @@ ggplot(data=x,
         panel.grid.minor=element_blank(),
         legend.title=element_text(size=8),
         legend.key=element_blank(),
-        legend.position=c(0.2,0.98),
+        legend.position=c(0.2,0.96),
         legend.text=element_text(size=8),
         legend.background=element_blank(),
         legend.direction="horizontal",
@@ -200,5 +199,3 @@ tiff(filename = 'figures/TF_N.tiff', #open plotting device
      compression = "lzw")
 grid.arrange(gA, gB, nrow=2, ncol=1)  # push plot to device
 dev.off()  # close device
-
-#wont load

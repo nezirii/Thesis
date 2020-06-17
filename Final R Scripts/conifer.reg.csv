@@ -1,0 +1,25 @@
+location,plot,rate.of.decomposition,leaf.type,impact,total.water.l,total.mg.din
+Blue,1,-0.001038272,Conifer,High,1.17,0.962832167
+Blue,2,-0.001110439,Conifer,High,2.07,0.817911093
+Blue,3,-0.001316655,Conifer,High,3,2.252383743
+Cougar,1,-0.00129499,Conifer,High,1.46,0.067326618
+Cougar,2,-0.000902786,Conifer,High,1.56,1.130493761
+Cougar,3,-0.0010298,Conifer,High,0.74,0.622690895
+Hovey,1,-0.00102053,Conifer,High,3.17,0.920205625
+Hovey,2,-0.00106873,Conifer,High,2.82,0.995167809
+Hovey,3,-0.001143025,Conifer,High,3.27,1.39274878
+Hurley,1,-0.000823431,Conifer,High,3.47,1.844705219
+Hurley,2,-0.001172359,Conifer,High,2.96,0.661300947
+Hurley,3,-0.000805788,Conifer,High,2.89,1.012987133
+Jack,1,-0.001134208,Conifer,Low,2.31,0.809826871
+Jack,2,-0.00115859,Conifer,Low,2.75,0.542286357
+Jack,3,-0.00120066,Conifer,Low,3.19,0.810964033
+Jungle,1,-0.001264932,Conifer,Low,3.38,0.891434288
+Jungle,2,-0.001240667,Conifer,Low,1.54,0.844793217
+Jungle,3,-0.001078815,Conifer,Low,1.72,0.33855952
+Moonbeam,1,-0.001231331,Conifer,Low,4.3,0.520257348
+Moonbeam,2,-0.00116934,Conifer,Low,2.91,0.408901252
+Moonbeam,3,-0.001203337,Conifer,Low,3.53,0.56513057
+Stand Up,1,-0.001122079,Conifer,Low,1.75,0.276559385
+Stand Up,2,-0.001290648,Conifer,Low,0.72,0.210145995
+Stand Up,3,-0.00134417,Conifer,Low,3.23,0.463787031
