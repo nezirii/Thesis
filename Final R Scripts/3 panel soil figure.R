@@ -29,7 +29,7 @@ M.full<-lme(log.ug.NH4 ~ impact+f.time,
 anova(M.full)
 
 #this extracts what you need to look at pairwise differences and make a graphic
-M.full.em = emmeans(M.full, ~ f.time | impact)
+M.full.em = emmeans(M.full, ~ f.time)
 
 #this shows each pairwise difference (high v. low budworm at each sample event
 pairs(M.full.em)
