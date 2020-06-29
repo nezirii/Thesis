@@ -71,8 +71,20 @@ ggplot(data=x,
   xlab("Sample Event") +
   ylab(expression(Throughfall~SRP~(μg~P~L^{-1}))) +
   labs(fill="Budworm Activity") +
-  annotate("Text", x=2, y=1.0,label="Budworm Impact: P=0.4285", size=3) +
+  annotate("Text", x=2, y=0.8,label="Budworm Impact: P=0.43", size=3) +
   annotate("Text", x=2, y=0.9, label="Sample Event: P<0.0001", size=3) +
+  annotate("Text", x=0.6, y=1, label="A", size=5) +
+  annotate("Text", x=1, y=0.5, label="c", size=4) +
+  annotate("Text", x=2, y=0.5, label="c", size=4) +
+  annotate("Text", x=3, y=0.5, label="b", size=4) +
+  annotate("Text", x=3, y=0.42, label="c", size=4) +
+  annotate("Text", x=4, y=0.9, label="b", size=4) +
+  annotate("Text", x=5, y=0.5, label="a", size=4) +
+  annotate("Text", x=6, y=0.5, label="b", size=4) +
+  annotate("Text", x=7, y=0.5, label="c", size=4) +
+  annotate("Text", x=8, y=0.5, label="d", size=4) +
+  annotate("Text", x=9, y=0.9, label="b", size=4) +
+  annotate("Text", x=10, y=0.5, label="c", size=4) +
   theme_bw() +
   geom_hline(yintercept=0)+
   theme(panel.grid.major=element_blank(),
@@ -157,8 +169,20 @@ ggplot(data=x,
   xlab("Sample Event") +
   ylab(expression(Throughfall~DOC~(μg~C~L^{-1}))) +
   labs(fill="Budworm Activity") +
-  annotate("Text", x=2.5, y=400, label="Budworm Impact: P=0.2551", size=3) +
+  annotate("Text", x=2.5, y=360, label="Budworm Impact: P=0.26", size=3) +
   annotate("Text", x=2.5, y=380, label="Sample Event: P<0.0001", size=3) +
+  annotate("Text", x=0.6, y=400, label="B", size=5) +
+  annotate("Text", x=1, y=300, label="c", size=4) +
+  annotate("Text", x=2, y=300, label="c", size=4) +
+  annotate("Text", x=3, y=300, label="b", size=4) +
+  annotate("Text", x=3, y=250, label="c", size=4) +
+  annotate("Text", x=4, y=300, label="a", size=4) +
+  annotate("Text", x=5, y=300, label="b", size=4) +
+  annotate("Text", x=6, y=300, label="b", size=4) +
+  annotate("Text", x=7, y=300, label="d", size=4) +
+  annotate("Text", x=8, y=300, label="d", size=4) +
+  annotate("Text", x=9, y=300, label="b", size=4) +
+  annotate("Text", x=10, y=300, label="c", size=4) +
   theme_bw() +
   geom_hline(yintercept=0)+
   theme(panel.grid.major=element_blank(),

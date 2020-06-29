@@ -72,9 +72,10 @@ ggplot(data=x,
   xlab("Sample Event") +
   ylab(expression(Soil~Temperature~at~2~cm~~(C))) +
   labs(fill="Budworm Activity") +
-  annotate("Text", x=2, y=22, label="Budworm Impact: P=0.2769", size=3) +
+  annotate("Text", x=2, y=22, label="Budworm Impact: P=0.28", size=3) +
   annotate("Text", x=2, y=21, label="Sample Event: P<0.0001", size=3) +
   annotate("Text", x=2, y=20, label="Interaction: P<0.0001", size=3) +
+  annotate("Text", x=0.6, y=22, label="A", size=5) +
   theme_bw() +
   annotate("Text", x=2, y=10, label="*", size=4) +
   annotate("Text", x=4, y=12, label="*", size=4) +
@@ -161,9 +162,10 @@ ggplot(data=x,
   ylab(expression(Soil~Temperature~at~10~cm~(C))) +
   labs(fill="Budworm Activity") +
   theme_bw() +
-  annotate("Text", x=2, y=16, label="Budworm Impact: P=0.2312", size=3) +
+  annotate("Text", x=2, y=16, label="Budworm Impact: P=0.23", size=3) +
   annotate("Text", x=2, y=15, label="Sample Event: P<0.0001", size=3) +
   annotate("Text", x=2, y=14, label="Interaction: P<0.0001", size=3) +
+  annotate("Text", x=0.6, y=16, label="B", size=5) +
   annotate("Text", x=2, y=11, label="*", size=4) +
   annotate("Text", x=3, y=6, label="*", size=4) +
   annotate("Text", x=6, y=17, label="*", size=4) +

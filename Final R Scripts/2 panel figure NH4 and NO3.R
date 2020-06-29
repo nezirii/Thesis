@@ -75,6 +75,7 @@ ggplot(data=x,
   annotate("Text", x=5, y=2.3, label="Budworm Impact: P=0.0115", size=3) +
   annotate("Text", x=5, y=2.2, label="Sample Event: P<0.0001", size=3) +
   annotate("Text", x=5, y=2.1, label="Interaction: P<0.0001", size=3) +
+  annotate("Text", x=0.6, y=2.4, label="A", size=5) +
   theme_bw() +
   annotate("Text", x=1, y=1.8, label="*", size=4) +
   annotate("Text", x=6, y=1.9, label="*", size=4) +
@@ -153,15 +154,16 @@ ggplot(data=x,
                 position=position_dodge(0.9)) + 
   scale_fill_manual(values=c("gray","white")) +
   xlab("Sample Event") +
-  ylab(expression(Throughfall~log~Nitrate~(μ~N~L^{-1}))) +
+  ylab(expression(Throughfall~log~Nitrate~(μg~N~L^{-1}))) +
   labs(fill="Budworm Activity") +
-  annotate("Text", x=2, y=150, label="Budworm Impact: P=0.6275", size=3) +
+  annotate("Text", x=2, y=150, label="Budworm Impact: P=0.63", size=3) +
   annotate("Text", x=2, y=142, label="Sample Event: P<0.0001", size=3) +
   annotate("Text", x=2, y=134, label="Interaction: P<0.0001", size=3) +
   theme_bw() +
   annotate("Text", x=5, y=160, label="*", size=4) +
   annotate("Text", x=8, y=160, label="*", size=4) +
   annotate("Text", x=9, y=70, label="*", size=4) +
+  annotate("Text", x=0.6, y=160, label="B", size=5) +
   geom_hline(yintercept=0)+
   theme(panel.grid.major=element_blank(),
         panel.grid.minor=element_blank(),

@@ -12,6 +12,7 @@ library(multcomp)
 library(MuMIn)
 library(emmeans)
 
+#air te,p is x variable
 plot(x=st$air.temp, y=st$o.temp.2cm, xlab="Air Temperature (°C)", ylab="2cm Depth Temperature (°C)")
 
 cor(st$air.temp, st$o.temp.2cm)
