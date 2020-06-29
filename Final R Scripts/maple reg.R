@@ -12,7 +12,7 @@ library(multcomp)
 library(MuMIn)
 library(emmeans)
 
-plot(x=dr$total.water.l, y=cr$rate.of.decomposition, xlab="L H2O", ylab="Rate of Deciduous Decomposition")
+plot(x=dr$total.water.l, y=dr$rate.of.decomposition, xlab="L H2O", ylab="Rate of Deciduous Decomposition")
 
 cor(dr$total.water.l, dr$rate.of.decomposition)
 
@@ -47,7 +47,7 @@ tiff(filename = 'figures/Maple Water Reg.tiff', #open plotting device
 
 ##############################DIN Reg######################################
 
-plot(x=dr$total.water.l, y=cr$rate.of.decomposition, xlab="mg DIN", ylab="Rate of Deciduous Decomposition")
+plot(x=dr$total.mg.din, y=dr$rate.of.decomposition, xlab="Throughfall Deposition of DIN (mg)", ylab="Rate of Deciduous Decomposition (-k)")
 
 cor(dr$total.mg.din, dr$rate.of.decomposition)
 

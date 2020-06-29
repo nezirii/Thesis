@@ -69,12 +69,12 @@ ggplot(data=x,
   geom_errorbar(aes(ymin=emmean-SE, ymax=emmean+SE), width=0.2, 
                 position=position_dodge(0.9)) + 
   scale_fill_manual(values=c("gray","white")) +
-  xlab("Sample Event") +
+  #xlab("Sample Event") +
   ylab(expression(Soil~Temperature~at~2~cm~~(C))) +
   labs(fill="Budworm Activity") +
-  annotate("Text", x=2, y=22, label="Budworm Impact: P=0.28", size=3) +
-  annotate("Text", x=2, y=21, label="Sample Event: P<0.0001", size=3) +
-  annotate("Text", x=2, y=20, label="Interaction: P<0.0001", size=3) +
+  annotate("Text", x=1.7, y=22, label="Budworm Impact: P=0.28", size=3) +
+  annotate("Text", x=1.7, y=21, label="Sample Event: P<0.0001", size=3) +
+  annotate("Text", x=1.6, y=20, label="Interaction: P<0.0001", size=3) +
   annotate("Text", x=0.6, y=22, label="A", size=5) +
   theme_bw() +
   annotate("Text", x=2, y=10, label="*", size=4) +
@@ -92,8 +92,8 @@ ggplot(data=x,
         legend.direction="horizontal",
         legend.key.size=unit(0.3, "cm"),
         axis.title.y=element_text(size=8),
-        axis.title.x=element_text(size=8),
-        axis.text.x=element_text(size=8))
+        axis.title.x=element_blank(),
+        axis.text.x=element_blank())
 
 ############################10 cm######################################
 
@@ -162,9 +162,9 @@ ggplot(data=x,
   ylab(expression(Soil~Temperature~at~10~cm~(C))) +
   labs(fill="Budworm Activity") +
   theme_bw() +
-  annotate("Text", x=2, y=16, label="Budworm Impact: P=0.23", size=3) +
-  annotate("Text", x=2, y=15, label="Sample Event: P<0.0001", size=3) +
-  annotate("Text", x=2, y=14, label="Interaction: P<0.0001", size=3) +
+  annotate("Text", x=1.7, y=16, label="Budworm Impact: P=0.23", size=3) +
+  annotate("Text", x=1.7, y=15, label="Sample Event: P<0.0001", size=3) +
+  annotate("Text", x=1.6, y=14, label="Interaction: P<0.0001", size=3) +
   annotate("Text", x=0.6, y=16, label="B", size=5) +
   annotate("Text", x=2, y=11, label="*", size=4) +
   annotate("Text", x=3, y=6, label="*", size=4) +

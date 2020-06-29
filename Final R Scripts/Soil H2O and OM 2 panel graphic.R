@@ -72,21 +72,21 @@ ggplot(data=x,
   geom_errorbar(aes(ymin=emmean.raw-SE.raw, ymax=emmean.raw+SE.raw), width=0.2, 
                 position=position_dodge(0.9)) + 
   scale_fill_manual(values=c("gray","white")) +
-  xlab("Sample Event") +
+  #xlab("Sample Event") +
   ylab(" % Soil Moisture") +
   labs(fill="Budworm Activity") +
   theme_bw() +
-  annotate("Text", x=4.5, y=28, label="Budworm Impact: P=0.86", size=3) +
-  annotate("Text", x=4.5, y=26.5, label="Sample Event: P<0.0001", size=3) +
-  annotate("Text", x=0.6, y=28, label="A", size=5) +
+  annotate("Text", x=4.2, y=28, label="Budworm Impact: P=0.86", size=3) +
+  annotate("Text", x=4.2, y=26.5, label="Sample Event: P<0.0001", size=3) +
+  annotate("Text", x=0.6, y=29, label="A", size=5) +
   annotate("Text", x=1, y=12, label="a", size=3) +
-  annotate("Text", x=6.1, y=29, label="a", size=3) +
-  annotate("Text", x=2.1, y=26.5, label="d", size=3) +
-  annotate("Text", x=2.1, y=27.7, label="a", size=3) +
+  annotate("Text", x=2.2, y=27.5, label="d", size=3) +
+  annotate("Text", x=2.1, y=27.5, label="a", size=3) +
   annotate("Text", x=3, y=16, label="c", size=3) +
   annotate("Text", x=4, y=24, label="c", size=3) +
   annotate("Text", x=5, y=12, label="b", size=3) +
-  annotate("Text", x=6.1, y=28, label="e", size=3) +
+  annotate("Text", x=6.1, y=27, label="a", size=3) +
+  annotate("Text", x=6.2, y=27, label="e", size=3) +
   annotate("Text", x=7, y=16, label="a", size=3) +
   annotate("Text", x=8, y=24, label="c", size=3) +
   geom_hline(yintercept=0)+
@@ -100,8 +100,8 @@ ggplot(data=x,
         legend.direction="horizontal",
         legend.key.size=unit(0.3, "cm"),
         axis.title.y=element_text(size=8),
-        axis.title.x=element_text(size=8),
-        axis.text.x=element_text(size=8))
+        axis.title.x=element_blank(),
+        axis.text.x=element_blank())
 
 #################################Organic Matter##############################
 
@@ -165,8 +165,8 @@ ggplot(data=x,
   ylab("% Organic Matter") +
   labs(fill="Budworm Activity") +
   theme_bw() +
-  annotate("Text", x=2, y=11.9, label="Budworm Activity: P=0.49", size=3) +
-  annotate("Text", x=2, y=11.3, label="Sample Event: P=0.70", size=3) +
+  annotate("Text", x=1.7, y=11.8, label="Budworm Activity: P=0.49", size=3) +
+  annotate("Text", x=1.6, y=11.1, label="Sample Event: P=0.70", size=3) +
   annotate("Text", x=0.6, y=12, label="B", size=5) +
   geom_hline(yintercept=0)+
   theme(panel.grid.major=element_blank(),

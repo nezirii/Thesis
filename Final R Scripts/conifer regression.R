@@ -46,11 +46,11 @@ tiff(filename = 'figures/Conifer Water Reg.tiff', #open plotting device
 
 ##############################DIN Reg######################################
 
-plot(x=dr$total.water.l, y=cr$rate.of.decomposition, xlab="mg DIN", ylab="Rate of Coniferous Decomposition")
+plot(x=cr$total.mg.din, y=cr$rate.of.decomposition, xlab="mg DIN", ylab="Rate of Coniferous Decomposition (-K)")
 
-cor(dr$total.mg.din, dr$rate.of.decomposition)
+cor(cr$total.mg.din, cr$rate.of.decomposition)
 
-M1<-lm(rate.of.decomposition ~ total.mg.din, data=dr)
+M1<-lm(rate.of.decomposition ~ total.mg.din, data=cr)
 
 abline(M1)
 

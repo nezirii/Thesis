@@ -68,21 +68,21 @@ ggplot(data=x,
   geom_errorbar(aes(ymin=emmean-SE, ymax=emmean+SE), width=0.2, 
                 position=position_dodge(0.9)) + 
   scale_fill_manual(values=c("gray","white")) +
-  xlab("Sample Event") +
-  ylab(expression(Throughfall~SRP~(μg~P~L^{-1}))) +
+  #xlab("Sample Event") +
+  ylab(expression(Throughfall~SRP~(log~mg~P~L^{-1}))) +
   labs(fill="Budworm Activity") +
   annotate("Text", x=2, y=0.8,label="Budworm Impact: P=0.43", size=3) +
   annotate("Text", x=2, y=0.9, label="Sample Event: P<0.0001", size=3) +
   annotate("Text", x=0.6, y=1, label="A", size=5) +
-  annotate("Text", x=1, y=0.5, label="c", size=4) +
-  annotate("Text", x=2, y=0.5, label="c", size=4) +
-  annotate("Text", x=3, y=0.5, label="b", size=4) +
-  annotate("Text", x=3, y=0.42, label="c", size=4) +
+  annotate("Text", x=1, y=0.4, label="c", size=4) +
+  annotate("Text", x=2, y=0.2, label="c", size=4) +
+  annotate("Text", x=3, y=0.1, label="b", size=4) +
+  annotate("Text", x=3.2, y=0.1, label="c", size=4) +
   annotate("Text", x=4, y=0.9, label="b", size=4) +
   annotate("Text", x=5, y=0.5, label="a", size=4) +
-  annotate("Text", x=6, y=0.5, label="b", size=4) +
-  annotate("Text", x=7, y=0.5, label="c", size=4) +
-  annotate("Text", x=8, y=0.5, label="d", size=4) +
+  annotate("Text", x=6, y=0.3, label="b", size=4) +
+  annotate("Text", x=7, y=0.2, label="c", size=4) +
+  annotate("Text", x=8, y=0.1, label="d", size=4) +
   annotate("Text", x=9, y=0.9, label="b", size=4) +
   annotate("Text", x=10, y=0.5, label="c", size=4) +
   theme_bw() +
@@ -97,8 +97,8 @@ ggplot(data=x,
         legend.direction="horizontal",
         legend.key.size=unit(0.3, "cm"),
         axis.title.y=element_text(size=8),
-        axis.title.x=element_text(size=8),
-        axis.text.x=element_text(size=8))
+        axis.title.x=element_blank(),
+        axis.text.x=element_blank())
 
 ###############################DOC#################################################
 
@@ -167,22 +167,22 @@ ggplot(data=x,
                 position=position_dodge(0.9)) + 
   scale_fill_manual(values=c("gray","white")) +
   xlab("Sample Event") +
-  ylab(expression(Throughfall~DOC~(μg~C~L^{-1}))) +
+  ylab(expression(Throughfall~DOC~(mg~C~L^{-1}))) +
   labs(fill="Budworm Activity") +
-  annotate("Text", x=2.5, y=360, label="Budworm Impact: P=0.26", size=3) +
-  annotate("Text", x=2.5, y=380, label="Sample Event: P<0.0001", size=3) +
+  annotate("Text", x=2, y=355, label="Budworm Impact: P=0.26", size=3) +
+  annotate("Text", x=2, y=375, label="Sample Event: P<0.0001", size=3) +
   annotate("Text", x=0.6, y=400, label="B", size=5) +
-  annotate("Text", x=1, y=300, label="c", size=4) +
-  annotate("Text", x=2, y=300, label="c", size=4) +
-  annotate("Text", x=3, y=300, label="b", size=4) +
-  annotate("Text", x=3, y=250, label="c", size=4) +
+  annotate("Text", x=1, y=160, label="c", size=4) +
+  annotate("Text", x=2, y=150, label="c", size=4) +
+  annotate("Text", x=3, y=100, label="b", size=4) +
+  annotate("Text", x=3.2, y=100, label="c", size=4) +
   annotate("Text", x=4, y=300, label="a", size=4) +
-  annotate("Text", x=5, y=300, label="b", size=4) +
-  annotate("Text", x=6, y=300, label="b", size=4) +
-  annotate("Text", x=7, y=300, label="d", size=4) +
-  annotate("Text", x=8, y=300, label="d", size=4) +
+  annotate("Text", x=5, y=150, label="b", size=4) +
+  annotate("Text", x=6, y=160, label="b", size=4) +
+  annotate("Text", x=7, y=115, label="d", size=4) +
+  annotate("Text", x=8, y=100, label="d", size=4) +
   annotate("Text", x=9, y=300, label="b", size=4) +
-  annotate("Text", x=10, y=300, label="c", size=4) +
+  annotate("Text", x=10, y=150, label="c", size=4) +
   theme_bw() +
   geom_hline(yintercept=0)+
   theme(panel.grid.major=element_blank(),
