@@ -72,9 +72,9 @@ ggplot(data=x,
   #xlab("Sample Event") +
   ylab(expression(Throughfall~Ammonium~(log~μg~N~L^{-1}))) +
   labs(fill="Budworm Activity") +
-  annotate("Text", x=5.2, y=2.3, label="Budworm Impact: P=0.012", size=3) +
-  annotate("Text", x=5.1, y=2.2, label="Sample Event: P<0.0001", size=3) +
-  annotate("Text", x=5, y=2.1, label="Interaction: P<0.0001", size=3) +
+  annotate("Text", hjust=0, x=3.93, y=2.3, label="Budworm Impact: P=0.012", size=3) +
+  annotate("Text", hjust=0, x=3.93, y=2.2, label="Sample Event: P<0.0001", size=3) +
+  annotate("Text", hjust=0, x=3.93, y=2.1, label="Interaction: P<0.0001", size=3) +
   annotate("Text", x=0.6, y=2.4, label="A", size=5) +
   theme_bw() +
   annotate("Text", x=1, y=1.8, label="*", size=4) +
@@ -156,9 +156,9 @@ ggplot(data=x,
   xlab("Sample Event") +
   ylab(expression(Throughfall~Nitrate~(log~μg~N~L^{-1}))) +
   labs(fill="Budworm Activity") +
-  annotate("Text", x=2.1, y=150, label="Budworm Impact: P=0.63", size=3) +
-  annotate("Text", x=2.1, y=142, label="Sample Event: P<0.0001", size=3) +
-  annotate("Text", x=1.9, y=134, label="Interaction: P<0.0001", size=3) +
+  annotate("Text", hjust=0, x=.89, y=150, label="Budworm Impact: P=0.63", size=3) +
+  annotate("Text", hjust=0, x=.89, y=142, label="Sample Event: P<0.0001", size=3) +
+  annotate("Text", hjust=0, x=.89, y=134, label="Interaction: P<0.0001", size=3) +
   theme_bw() +
   annotate("Text", x=5, y=160, label="*", size=4) +
   annotate("Text", x=8, y=160, label="*", size=4) +

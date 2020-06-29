@@ -107,9 +107,9 @@ ggplot(data=x,
   ylab("Decomposition Rate (-k)")  + #I changed your y axis label
   ylim(0,.0015) +
   labs(fill="Budworm Activity") +
-  annotate("Text", x=.77, y=.0014, label="Budworm Impact: P=0.0024", size=4) +
-  annotate("Text", x=0.68, y=.00135, label="Leaf Type: P=0.68", size=4) +
-  annotate("Text", x=.95, y=.0013, label="Budworm Impact:Leaf Type Interaction: P=0.79", size=4) +
+  annotate("Text", hjust=0, x=.51, y=.0014, label="Budworm Impact: P=0.0024", size=4) +
+  annotate("Text", hjust=0, x=.51, y=.00135, label="Leaf Type: P=0.68", size=4) +
+  annotate("Text", hjust=0, x=.51, y=.0013, label="Budworm Impact:Leaf Type Interaction: P=0.79", size=4) +
   theme_bw() +
   theme(panel.grid.major=element_blank(),
         panel.grid.minor=element_blank(),

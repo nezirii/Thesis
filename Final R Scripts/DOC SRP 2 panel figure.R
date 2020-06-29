@@ -71,13 +71,13 @@ ggplot(data=x,
   #xlab("Sample Event") +
   ylab(expression(Throughfall~SRP~(log~mg~P~L^{-1}))) +
   labs(fill="Budworm Activity") +
-  annotate("Text", x=2, y=0.8,label="Budworm Impact: P=0.43", size=3) +
-  annotate("Text", x=2, y=0.9, label="Sample Event: P<0.0001", size=3) +
+  annotate("Text", hjust=0, x=.88, y=0.8,label="Budworm Impact: P=0.43", size=3) +
+  annotate("Text", hjust=0, x=.88, y=0.9, label="Sample Event: P<0.0001", size=3) +
   annotate("Text", x=0.6, y=1, label="A", size=5) +
   annotate("Text", x=1, y=0.4, label="c", size=4) +
   annotate("Text", x=2, y=0.2, label="c", size=4) +
   annotate("Text", x=3, y=0.1, label="b", size=4) +
-  annotate("Text", x=3.2, y=0.1, label="c", size=4) +
+  annotate("Text", x=3.15, y=0.1, label="c", size=4) +
   annotate("Text", x=4, y=0.9, label="b", size=4) +
   annotate("Text", x=5, y=0.5, label="a", size=4) +
   annotate("Text", x=6, y=0.3, label="b", size=4) +
@@ -169,13 +169,13 @@ ggplot(data=x,
   xlab("Sample Event") +
   ylab(expression(Throughfall~DOC~(mg~C~L^{-1}))) +
   labs(fill="Budworm Activity") +
-  annotate("Text", x=2, y=355, label="Budworm Impact: P=0.26", size=3) +
-  annotate("Text", x=2, y=375, label="Sample Event: P<0.0001", size=3) +
+  annotate("Text", hjust=0, x=.88, y=355, label="Budworm Impact: P=0.26", size=3) +
+  annotate("Text", hjust=0, x=.88, y=375, label="Sample Event: P<0.0001", size=3) +
   annotate("Text", x=0.6, y=400, label="B", size=5) +
   annotate("Text", x=1, y=160, label="c", size=4) +
   annotate("Text", x=2, y=150, label="c", size=4) +
   annotate("Text", x=3, y=100, label="b", size=4) +
-  annotate("Text", x=3.2, y=100, label="c", size=4) +
+  annotate("Text", x=3.15, y=100, label="c", size=4) +
   annotate("Text", x=4, y=300, label="a", size=4) +
   annotate("Text", x=5, y=150, label="b", size=4) +
   annotate("Text", x=6, y=160, label="b", size=4) +

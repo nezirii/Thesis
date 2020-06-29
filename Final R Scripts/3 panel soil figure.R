@@ -80,16 +80,16 @@ ggplot(data=x,
   labs(fill="Budworm Activity") +
   annotate("Text", x=1, y=6, label="a", size=3) +
   annotate("Text", x=2, y=8, label="a", size=3) +
-  annotate("Text", x=2.2, y=8, label="b", size=3) +
+  annotate("Text", x=2.1, y=8, label="b", size=3) +
   annotate("Text", x=3, y=11, label="b", size=3) +
-  annotate("Text", x=3.2, y=11, label="c", size=3) +
+  annotate("Text", x=3.1, y=11, label="c", size=3) +
   annotate("Text", x=4, y=16, label="b", size=3) +
   annotate("Text", x=5, y=4.5, label="c", size=3) +
   annotate("Text", x=6, y=7, label="a", size=3) +
   annotate("Text", x=7, y=9, label="c", size=3) +
   annotate("Text", x=8, y=15, label="d", size=3) +
-  annotate("Text", x=1.75, y=14, label="Budworm Impact: P=0.33", size=3) +
-  annotate("Text", x=1.75, y=13, label="Sample Event: P<0.0001", size=3) +
+  annotate("Text", hjust=0, x=.79, y=14, label="Budworm Impact: P=0.33", size=3) +
+  annotate("Text", hjust=0, x=.79, y=13, label="Sample Event: P<0.0001", size=3) +
   annotate("Text", x=0.6, y=15, label="A", size=5) +
   theme_bw() +
   geom_hline(yintercept=0)+
@@ -180,9 +180,9 @@ ggplot(data=x,
   ylim(-2.5,16) +
   ylab(expression(Soil~Nitrate~(μg~NO[3]~-N~g^{-1}~soil))) +
   labs(fill="Budworm Activity") +
-  annotate("Text", x=1.75, y=14, label="Budworm Impact: P=0.76", size=3) +
-  annotate("Text", x=1.75, y=12.5, label="Sample Event: P<0.0001", size=3) +
-  annotate("Text", x=1.65, y=11, label="Interaction: P=0.0030", size=3) +
+  annotate("Text", hjust=0, x=.79, y=14, label="Budworm Impact: P=0.76", size=3) +
+  annotate("Text", hjust=0, x=.79, y=12.5, label="Sample Event: P<0.0001", size=3) +
+  annotate("Text", hjust=0, x=.79, y=11, label="Interaction: P=0.0030", size=3) +
   annotate("Text", x=6, y=3, label="*", size=4) +
   annotate("Text", x=8, y=14, label="*", size=4) +
   annotate("Text", x=0.6, y=15.5, label="B", size=5) +

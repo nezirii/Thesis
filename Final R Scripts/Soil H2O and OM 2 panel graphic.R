@@ -76,8 +76,8 @@ ggplot(data=x,
   ylab(" % Soil Moisture") +
   labs(fill="Budworm Activity") +
   theme_bw() +
-  annotate("Text", x=4.2, y=28, label="Budworm Impact: P=0.86", size=3) +
-  annotate("Text", x=4.2, y=26.5, label="Sample Event: P<0.0001", size=3) +
+  annotate("Text", hjust=0, x=3.25, y=28, label="Budworm Impact: P=0.86", size=3) +
+  annotate("Text", hjust=0, x=3.25, y=26.5, label="Sample Event: P<0.0001", size=3) +
   annotate("Text", x=0.6, y=29, label="A", size=5) +
   annotate("Text", x=1, y=12, label="a", size=3) +
   annotate("Text", x=2.2, y=27.5, label="d", size=3) +
@@ -165,8 +165,8 @@ ggplot(data=x,
   ylab("% Organic Matter") +
   labs(fill="Budworm Activity") +
   theme_bw() +
-  annotate("Text", x=1.7, y=11.8, label="Budworm Activity: P=0.49", size=3) +
-  annotate("Text", x=1.6, y=11.1, label="Sample Event: P=0.70", size=3) +
+  annotate("Text", hjust=0, x=0.79, y=11.8, label="Budworm Activity: P=0.49", size=3) +
+  annotate("Text", hjust=0, x=0.79, y=11.1, label="Sample Event: P=0.70", size=3) +
   annotate("Text", x=0.6, y=12, label="B", size=5) +
   geom_hline(yintercept=0)+
   theme(panel.grid.major=element_blank(),
