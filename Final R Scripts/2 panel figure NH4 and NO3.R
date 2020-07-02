@@ -154,7 +154,7 @@ ggplot(data=x,
                 position=position_dodge(0.9)) + 
   scale_fill_manual(values=c("gray","white")) +
   xlab("Sample Event") +
-  ylab(expression(Throughfall~Nitrate~(log~μg~N~L^{-1}))) +
+  ylab(expression(Throughfall~Nitrate~(μg~N~L^{-1}))) +
   labs(fill="Budworm Activity") +
   annotate("Text", hjust=0, x=.89, y=150, label="Budworm Impact: P=0.63", size=3) +
   annotate("Text", hjust=0, x=.89, y=142, label="Sample Event: P<0.0001", size=3) +

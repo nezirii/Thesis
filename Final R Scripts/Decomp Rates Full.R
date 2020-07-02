@@ -100,9 +100,9 @@ x <- group_by(decomp, leaf.type, impact) %>%  # Grouping function causes subsequ
 ggplot(data=x, 
        aes(x=leaf.type, y=rate.of.decomposition.mean, fill=impact)) + 
   geom_bar(stat="identity", position=position_dodge(), color = "black") + 
-  geom_errorbar(aes(ymin=rate.of.decomposition.mean, ymax=rate.of.decomposition.mean+rate.of.decomposition.se), width=0.2, 
+  geom_errorbar(aes(ymin=rate.of.decomposition.mean-rate.of.decomposition.se, ymax=rate.of.decomposition.mean+rate.of.decomposition.se), width=0.2, 
                 position=position_dodge(0.9)) + 
-  scale_fill_manual(values=c("white","black")) +
+  scale_fill_manual(values=c("gray","white")) +
   xlab("Leaf Type") +
   ylab("Decomposition Rate (-k)")  + #I changed your y axis label
   ylim(0,.0015) +

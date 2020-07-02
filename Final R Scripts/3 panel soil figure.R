@@ -263,7 +263,7 @@ ggplot(data=x,
                 position=position_dodge(0.9)) + 
   scale_fill_manual(values=c("gray","white")) +
   xlab("Sample Event") +
-  ylab(expression(Soil~SRP~(log~μg~PO[4]^{-3}~-P~g^{-1}~soil))) +
+  ylab(expression(Soil~SRP~(μg~PO[4]^{-3}~-P~g^{-1}~soil))) +
   labs(fill="Budworm Activity") +
   annotate("Text", x=4.4, y=125, label="Budworm Impact: P=0.047", size=3) +
   annotate("Text", x=6.5, y=125, label="Sample Event: P=0.91", size=3) +
