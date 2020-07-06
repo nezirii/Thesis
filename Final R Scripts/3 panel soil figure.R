@@ -76,7 +76,7 @@ ggplot(data=x,
                 position=position_dodge(0.9)) + 
   scale_fill_manual(values=c("gray","white")) +
   #xlab("Sample Event") +
-  ylab(expression(Soil~Ammonium~(μg~N~L^{-1}))) +
+  ylab(expression(Soil~Ammonium~(μg~N~g^{-1}))) +
   labs(fill="Budworm Activity") +
   annotate("Text", x=1, y=6, label="a", size=3) +
   annotate("Text", x=2, y=8, label="a", size=3) +
