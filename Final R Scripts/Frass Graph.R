@@ -17,14 +17,14 @@ library(ggplot2)
 
 #Means Plot
 
-x1 <- group_by(fl, treatment, f.interval) %>%  # Grouping function causes subsequent functions to aggregate by season and reach
+x <- group_by(fl, treatment, f.interval) %>%  # Grouping function causes subsequent functions to aggregate by season and reach
   summarize(frass.N.m2.d.mean = mean(frass.N.m2.d, na.rm = TRUE), # na.rm = TRUE to remove missing values
             frass.N.m2.d.sd=sd(frass.N.m2.d, na.rm = TRUE),  # na.rm = TRUE to remove missing values
             n = sum(!is.na(frass.N.m2.d)), # of observations, excluding NAs. 
             frass.N.m2.d.se=frass.N.m2.d.sd/sqrt(n))
 
 #make a new vector with the categorical intervals
-cat.interval<-c("6 Jul 15", "23 Jul 15", "28 Aug 15", "11 Oct 15", "19 Nov 15")
+cat.interval<-c("14 Jun 15", "21 Jun 15", "29 Jun 15", "6 Jul 15", "23 Jul 15", "28 Aug 15", "11 Oct 15", "19 Nov 15", "6 Jul 15", "23 Jul 15", "28 Aug 15", "11 Oct 15", "19 Nov 15")
 #force the new vector to be characters
 x$cat.interval<-as.character(cat.interval)
 #force the new vector to be ordered in the order you gave it instead of alphabetical
@@ -32,7 +32,7 @@ x$cat.interval<-factor(x$cat.interval, levels=unique(x$cat.interval))
 
 pd=position_dodge(0.1)
 
-ggplot(data=fl, aes(x=cat.interval)) + 
+ggplot(data=x, aes(x=cat.interval)) + 
   geom_errorbar(aes(ymin=frass.N.m2.d.mean-frass.N.m2.d.se, ymax=frass.N.m2.d.mean+frass.N.m2.d.se), 
   color="black", width=0.1, position=pd) + 
   geom_line(aes(y=x1, colour = "black")) +

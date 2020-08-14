@@ -30,7 +30,7 @@ x2 <- group_by(fl, treatment, f.interval) %>%  # Grouping function causes subseq
             litter.N.m2.d.se=litter.N.m2.d.sd/sqrt(n))
 
 #make a new vector with the categorical intervals
-cat.interval<-c("6 Jul 15", "23 Jul 15", "28 Aug 15", "11 Oct 15", "19 Nov 15")
+cat.interval<-c("14 Jun 15", "21 Jun 15", "29 Jun 15", "6 Jul 15", "6 Jul 15", "23 Jul 15", "23 Jul 15", "28 Aug 15", "28 Aug 15", "11 Oct 15", "11 Oct 15", "19 Nov 15", "19 Nov 15")
 #force the new vector to be characters
 x$cat.interval<-as.character(cat.interval)
 #force the new vector to be ordered in the order you gave it instead of alphabetical

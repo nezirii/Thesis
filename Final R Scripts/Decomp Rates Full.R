@@ -104,7 +104,7 @@ ggplot(data=x,
                 position=position_dodge(0.9)) + 
   scale_fill_manual(values=c("gray","white")) +
   xlab("Leaf Type") +
-  ylab("Decomposition Rate (-k)")  + #I changed your y axis label
+  ylab("Decomposition Rate (k)")  + #I changed your y axis label
   ylim(0,.0015) +
   labs(fill="Budworm Activity") +
   annotate("Text", hjust=0, x=.51, y=.0014, label="Budworm Impact: P=0.0024", size=4) +
