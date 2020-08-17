@@ -47,7 +47,7 @@ tiff(filename = 'figures/Maple Water Reg.tiff', #open plotting device
 
 ##############################DIN Reg######################################
 
-plot(x=dr$total.mg.din, y=dr$rate.of.decomposition, xlab="Throughfall Deposition of DIN (mg)", ylab="Rate of Deciduous Decomposition (-k)")
+plot(x=dr$total.mg.din, y=dr$rate.of.decomposition, xlab="Throughfall Deposition of DIN (mg)", ylab="Rate of Deciduous Decomposition (k)")
 
 cor(dr$total.mg.din, dr$rate.of.decomposition)
 

@@ -76,7 +76,7 @@ ggplot(data=x,
                 position=position_dodge(0.9)) + 
   scale_fill_manual(values=c("gray","white")) +
   #xlab("Sample Event") +
-  ylab(expression(Soil~Ammonium~(Î¼g~N~g^{-1}))) +
+  ylab(expression(Soil~Ammonium~(µg~N~g^{-1}))) +
   labs(fill="Budworm Activity") +
   annotate("Text", x=1, y=6, label="a", size=3) +
   annotate("Text", x=2, y=8, label="a", size=3) +
@@ -178,7 +178,7 @@ ggplot(data=x,
   scale_fill_manual(values=c("gray","white")) +
   #xlab("Sample Event") +
   ylim(-2.5,16) +
-  ylab(expression(Soil~Nitrate~(Î¼g~NO[3]~-N~g^{-1}~soil))) +
+  ylab(expression(Soil~Nitrate~(µg~NO[3]~-N~g^{-1}~soil))) +
   labs(fill="Budworm Activity") +
   annotate("Text", hjust=0, x=.79, y=14, label="Budworm Impact: P=0.76", size=3) +
   annotate("Text", hjust=0, x=.79, y=12.5, label="Sample Event: P<0.0001", size=3) +
@@ -263,11 +263,11 @@ ggplot(data=x,
                 position=position_dodge(0.9)) + 
   scale_fill_manual(values=c("gray","white")) +
   xlab("Sample Event") +
-  ylab(expression(Soil~SRP~(Î¼g~PO[4]^{-3}~-P~g^{-1}~soil))) +
+  ylab(expression(Soil~SRP~(µg~PO[4]^{-3}~-P~g^{-1}~soil))) +
   labs(fill="Budworm Activity") +
   annotate("Text", x=4.4, y=125, label="Budworm Impact: P=0.047", size=3) +
   annotate("Text", x=6.5, y=125, label="Sample Event: P=0.91", size=3) +
-  annotate("Text", x=0.6, y=120, label="C", size=5) +
+  annotate("Text", x=0.6, y=115, label="C", size=5) +
   theme_bw() +
   geom_hline(yintercept=0)+
   theme(panel.grid.major=element_blank(),
